@@ -1,0 +1,40 @@
+#!/bin/bash
+# This script creates a new subtheme for zen following the instructions on drupal.org/node/226507
+# Place this file in your themes directory, alongside the zen folder, as a file named "subtheme"
+# Usage: open a shell, navigate to the themes directory and run ./subtheme
+# (Run chmod 700 on this file to make it executable)
+# Based on script submitted here: drupal.org/node/276120
+
+echo "Enter a human-readable subtheme name:"
+read -e INPUTNAME
+
+NAME=`echo $INPUTNAME | tr '[:upper:]' '[:lower:]' | sed -e 's/[ -]/_/g' -e 's/[^a-z_]//g'`
+SEDNAME=`echo $INPUTNAME | sed -e 's/"/\\"/g'`
+
+echo -n "Choose a page layout type [f]ixed or [l]iquid for subtheme $NAME: "
+read -e LAYOUT
+
+if [ $LAYOUT = "f" ]; then
+  CSS="layout-fixed.css"
+elif [ $LAYOUT = "l" ]; then
+  CSS="layout-liquid.css"
+else
+  echo Invalid layout type.
+  exit
+fi
+
+cp -r zen/STARTERKIT $NAME
+
+#
+# Change the theme name (the line 'name = ...') to the new subtheme name
+#
+sed 's/STARTERKIT/'$NAME'/g' $NAME/STARTERKIT.info | sed 's/^\(name *= *\).*/\1'"$SEDNAME"'/g' > $NAME/$NAME.info
+  rm $NAME/STARTERKIT.info
+
+cp zen/zen/$CSS $NAME/layout.css
+cp zen/zen/print.css $NAME/print.css
+cp zen/zen/zen.css $NAME/$NAME.css
+sed 's/STARTERKIT/'$NAME'/g' zen/STARTERKIT/template.php > $NAME/template.php
+sed 's/STARTERKIT/'$NAME'/g' zen/STARTERKIT/theme-settings.php > $NAME/theme-settings.php
+
+exit 0
