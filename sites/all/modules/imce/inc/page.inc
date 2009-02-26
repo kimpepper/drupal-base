@@ -1,5 +1,5 @@
 <?php
-// $Id: page.inc,v 1.10.2.13 2008/07/19 13:27:27 ufku Exp $
+// $Id: page.inc,v 1.10.2.21 2009/02/20 00:44:05 ufku Exp $
 
 /**
  * q = imce.
@@ -91,6 +91,8 @@ function imce_js($user, $jsop = '') {
   //messages
   $response['messages'] = drupal_get_messages();
 
+  //for upload we must return plain text header.
+  drupal_set_header('Content-Type: text/'. ($jsop == 'upload' ? 'html' : 'javascript') .'; charset=utf-8');
   print drupal_to_js($response);
   exit();
 }
@@ -419,7 +421,7 @@ function imce_create_thumbnail($filename, &$imce, $thumbnail) {
   }
   //scale the image
   list($width, $height) = explode('x', $thumbnail['dimensions']);
-  return imce_resize_image($filename, $imce, $width, $height, TRUE, $name, 'scale_and_crop');
+  return imce_resize_image($filename, $imce, $width, $height, TRUE, $name, variable_get('imce_settings_thumb_method', 'scale_and_crop'));
 }
 
 /**
@@ -625,7 +627,7 @@ function imce_validate_quotas($file, &$imce, $add = 0) {
  * Check if the file is an image and return info.
  */
 function imce_image_info($file) {
-  if (is_file($file) && ($info = @getimagesize($file)) && in_array($info[2], array(IMAGETYPE_JPEG, IMAGETYPE_GIF, IMAGETYPE_PNG)) ) {
+  if (is_file($file) && ($dot = strrpos($file, '.')) && in_array(strtolower(substr($file, $dot+1)), array('jpg', 'jpeg', 'gif', 'png')) && ($info = @getimagesize($file)) && in_array($info[2], array(IMAGETYPE_JPEG, IMAGETYPE_GIF, IMAGETYPE_PNG)) ) {
     return array('width' => $info[0], 'height' => $info[1], 'type' => $info[2], 'mime' => $info['mime']);
   }
   return FALSE;
@@ -720,6 +722,13 @@ function imce_process_directories($directories, $user) {
     if (substr($directory['name'], 0, 4) == 'php:') {
       //not using drupal_eval since we need $user to be accessible as it may be different from $GLOBALS['user']
       $directory['name'] = eval(substr($directory['name'], 4));
+     //php may return an array of directories
+      if (is_array($directory['name'])) {
+        foreach ($directory['name'] as $name) {
+          $paths[$name] = array('name' => $name) + $directory;
+        }
+        continue;
+      }
     }
     else {
       $directory['name'] = strtr($directory['name'], $translate);
@@ -926,6 +935,7 @@ function imce_scan_directory($dirname) {
   }
 
   closedir($handle);
+  sort($directory['subdirectories']);
   return $directory;
 }
 
@@ -947,7 +957,7 @@ function imce_create_tree(&$imce) {
       }
       $tmp[':access:'] = TRUE;
     }
-    if ($path === $imce['dir']) {
+    if ("$path" == $imce['dir']) {
       $tmp[':active:'] = TRUE;
       foreach ($imce['subdirectories'] as $arg) {
         $tmp[$arg][':access:'] = TRUE;

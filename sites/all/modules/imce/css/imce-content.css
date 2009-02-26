@@ -1,4 +1,4 @@
-/* $Id: imce-content.css,v 1.1.2.1 2008/06/23 22:15:16 ufku Exp $ */
+/* $Id: imce-content.css,v 1.1.2.2 2009/01/29 11:34:21 ufku Exp $ */
 
 /*Main container*/
 #imce-content {
@@ -16,6 +16,7 @@
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-top: 1px solid #ccc;
+  clear: both;
 }
 #browse-resizer {}
 #log-prv-wrapper {

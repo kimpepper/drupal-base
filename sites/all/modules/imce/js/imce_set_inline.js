@@ -1,4 +1,4 @@
-// $Id: imce_set_inline.js,v 1.3.2.2 2008/06/17 16:24:01 ufku Exp $
+// $Id: imce_set_inline.js,v 1.3.2.4 2009/02/20 21:17:58 ufku Exp $
 
 var imceInline = {};
 
@@ -9,17 +9,19 @@ imceInline.initiate = function() {
     imceInline.activeType = this.name.substr(i+6);
  
     if (typeof imceInline.pop == 'undefined' || imceInline.pop.closed) {
-      imceInline.pop = window.open(this.href, '', 'width='+ 760 +',height='+ 560 +',resizable=1');
-      imceInline.pop['imceOnLoad'] = function (win) {//set a function to be executed when imce loads.
-        win.imce.setSendTo(Drupal.t('Send to @app', {'@app': Drupal.t('textarea')}), imceInline.insert);
-        $(window).unload(function() {
-          if (imceInline.pop && !imceInline.pop.closed) imceInline.pop.close();
-        });
-      }
+      imceInline.pop = window.open(this.href + (this.href.indexOf('?') < 0 ? '?' : '&') +'app=nomatter|onload@imceInlineImceLoad', '', 'width='+ 760 +',height='+ 560 +',resizable=1');
     }
 
     imceInline.pop.focus();
     return false;
+  });
+};
+
+//function to be executed when imce loads.
+function imceInlineImceLoad(win) {
+  win.imce.setSendTo(Drupal.t('Send to @app', {'@app': Drupal.t('textarea')}), imceInline.insert);
+  $(window).unload(function() {
+    if (imceInline.pop && !imceInline.pop.closed) imceInline.pop.close();
   });
 };
 

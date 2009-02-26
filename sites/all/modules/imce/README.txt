@@ -1,4 +1,4 @@
-// $Id: README.txt,v 1.11.2.5 2008/07/05 21:09:38 ufku Exp $
+// $Id: README.txt,v 1.11.2.6 2009/02/21 00:03:15 ufku Exp $
 
 IMCE is an image/file uploader and browser that supports personal directories and quota.
 IMCE can easily be integrated into any WYSIWYG editor or any web application that needs a file browser.
@@ -63,6 +63,8 @@ Probably talking about tinyMCE or FCKeditor. See INTEGRATION METHODS to learn to
 - Upload does not work in Opera
 Jquery form plugin before version 2.09 has problems with Opera 9.2+. Replace Drupal's misc/jquery.form.js with http://jqueryjs.googlecode.com/svn/trunk/plugins/form/jquery.form.js
 
+- IMCE may have problem working with Google Analytics and Secure pages modules. Just make sure to add imce* path to the exceptions list of these modules.
+
 ~~~~~~~INTEGRATION METHODS~~~~~~~
 
 Here are the applications whose users are lucky that they don't have to read the details of integration methods.
@@ -113,6 +115,22 @@ Clicking the files in preview do the same thing as well.
 
 - What if we had another field for another file property e.g, Size: <input type="text" id="file-size"> ?
 - We should have opened imce using this URL: /?q=imce&app=myApp|url@urlField|size@file-size
+
+IMCE 6.x-1.2 brought two other special properties(onload and sendto) allowing more flexibility.
+- onload:
+You can point a predefined function to be executed when IMCE loads.
+When the URL is like ...&app=myApp|onload@myOnloadFunc, IMCE looks for myOnloadFunc in the parent window and executes it with the window parameter referring to IMCE window.
+function myOnloadFunc (win) {//any method of imce is available through win.imce
+  win.imce.setSendTo('Give it to myApplication baby', myFileHandler);//you should also define myFileHandler
+}
+- sendto:
+You can point a predefined function to which the selected files are sent.
+When the URL is like ...&app=myApp|sendto@myFileHandler, IMCE calls myFileHandler function of the parent window with file and window parameters.
+function myFileHandler (file, win) {
+  $('#urlFieldId').val(file.url);//insert file url into the url field
+  win.close();//close IMCE
+}
+Usually sendto method is easier to implement, on the other hand onload method is more flexible as you manually add your sento operator and also can do any modification before IMCE shows up.
 
 
 ~~~~~~INTEGRATION BY ONLOAD~~~~~~

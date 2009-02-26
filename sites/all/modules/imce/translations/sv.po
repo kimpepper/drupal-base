@@ -1,25 +1,25 @@
-# $Id: sv.po,v 1.1.2.2 2008/06/10 07:09:22 seals Exp $
+# $Id: sv.po,v 1.1.2.3 2008/07/25 23:02:09 seals Exp $
 #
 # Swedish translation of Drupal (imce)
 # Copyright 2008 Magnus Gunnarsson <seals@passagen.se>
 # Generated from files:
-#  imce.module,v 1.23.2.2 2008/04/13 21:24:17 ufku
+#  imce.module,v 1.23.2.5 2008/07/19 13:21:02 ufku
 #  imce.info,v 1.6 2008/02/27 18:03:46 ufku
-#  admin.inc,v 1.5.2.4 2008/04/18 21:49:01 ufku
-#  page.inc,v 1.10.2.5 2008/04/17 23:46:45 ufku
-#  js.inc,v 1.6 2008/03/24 07:32:27 ufku
-#  imce-content.tpl.php,v 1.8.2.2 2008/04/13 21:28:29 ufku
-#  imce.js,v 1.15.2.5 2008/04/17 23:41:19 ufku
+#  admin.inc,v 1.5.2.5 2008/06/10 08:39:09 ufku
+#  page.inc,v 1.10.2.13 2008/07/19 13:27:27 ufku
+#  js.inc,v 1.6.2.1 2008/05/04 15:29:15 ufku
+#  imce-content.tpl.php,v 1.8.2.4 2008/06/23 22:18:27 ufku
+#  imce.js,v 1.15.2.9 2008/07/13 11:34:49 ufku
 #  subdir.inc,v 1.3 2008/02/29 16:57:12 ufku
-#  imce_set_app.js,v 1.3.2.1 2008/04/14 19:18:54 ufku
-#  imce_set_inline.js,v 1.3.2.1 2008/04/13 21:24:17 ufku
-#  imce-page.tpl.php,v 1.8.2.1 2008/04/13 21:26:12 ufku
+#  imce_set_app.js,v 1.3.2.3 2008/07/13 11:23:51 ufku
+#  imce_set_inline.js,v 1.3.2.2 2008/06/17 16:24:01 ufku
+#  imce-page.tpl.php,v 1.8.2.2 2008/04/21 18:36:22 ufku
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: IMCE 6.x\n"
-"POT-Creation-Date: 2008-05-05 18:27+0200\n"
-"PO-Revision-Date: 2008-05-05 18:29+0100\n"
+"POT-Creation-Date: 2008-07-25 21:00+0200\n"
+"PO-Revision-Date: 2008-07-25 21:02+0100\n"
 "Last-Translator: Magnus Gunnarsson <seals@passagen.se>\n"
 "Language-Team: drupalsverige.se\n"
 "MIME-Version: 1.0\n"
@@ -30,15 +30,15 @@ msgstr ""
 "X-Poedit-Country: SWEDEN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: imce.module:117
+#: imce.module:131
 msgid "Insert !image or !link."
 msgstr "Sätt in !image eller !link."
 
-#: imce.module:117
+#: imce.module:131
 msgid "image"
 msgstr "bild"
 
-#: imce.module:117
+#: imce.module:131
 msgid "link"
 msgstr "länk"
 
@@ -69,7 +69,7 @@ msgid "Add new profile"
 msgstr "Lägg till ny profil"
 
 #: imce.module:0
-#: inc/page.inc:245
+#: inc/page.inc:250
 msgid "imce"
 msgstr "imce"
 
@@ -83,17 +83,17 @@ msgstr "Namn på profilen"
 
 #: inc/admin.inc:14
 msgid "Operations"
-msgstr "Alternativ"
+msgstr "Funktioner"
 
 #: inc/admin.inc:19
 msgid "Edit"
 msgstr "Redigera"
 
-#: inc/admin.inc:20;306;459
+#: inc/admin.inc:20;306;460
 #: inc/js.inc:42
-#: inc/page.inc:148;185
+#: inc/page.inc:151;190
 msgid "Delete"
-msgstr "Ta bort"
+msgstr "Radera"
 
 #: inc/admin.inc:26
 msgid "Configuration profiles"
@@ -269,19 +269,19 @@ msgstr "Bläddra"
 
 #: inc/admin.inc:296
 #: inc/js.inc:21
-#: inc/page.inc:109
+#: inc/page.inc:111
 #: js/imce.js:0
 msgid "Upload"
 msgstr "Ladda upp"
 
 #: inc/admin.inc:301;407
-#: inc/page.inc:141;168
+#: inc/page.inc:143;173
 msgid "Thumbnails"
 msgstr "Miniatyrbilder"
 
 #: inc/admin.inc:311
 #: inc/js.inc:52
-#: inc/page.inc:154;210
+#: inc/page.inc:159;215
 msgid "Resize"
 msgstr "Förminska"
 
@@ -361,163 +361,167 @@ msgstr ""
 "<p>Observera att användare kommer alltid att kunna skapa miniatyrbilder vid filuppladdning oavsett vad rättigheterna för miniatyrbilderna är. För att avaktivera skapandet av miniatyrbilder vid filuppladdning skall du inte definiera några miniatyrbilder här.</p>\n"
 "<p>Om du behöver fler fält är det bara att fylla alla och spara så skapas två nya på nästa sida.</p>"
 
-#: inc/admin.inc:455
+#: inc/admin.inc:456
 msgid "Are you sure you want to delete the profile %name?"
 msgstr "Är du säker på att du vill radera profilen %name?"
 
-#: inc/admin.inc:460
+#: inc/admin.inc:461
 msgid "Cancel"
-msgstr "Avbryt"
+msgstr "Ångra"
 
-#: inc/admin.inc:471
+#: inc/admin.inc:472
 msgid "Profile has been deleted."
 msgstr "Profilen har raderats."
 
-#: inc/admin.inc:479
+#: inc/admin.inc:480
 msgid "none"
-msgstr "ingen"
+msgstr "inget"
 
-#: inc/admin.inc:500
+#: inc/admin.inc:501
 msgid "Import settings from other profiles"
 msgstr "Importera inställningar från andra profiler"
 
-#: inc/admin.inc:569
+#: inc/admin.inc:570
 msgid "Duplicate directory paths are not allowed."
 msgstr "Dubbla sökvägar för kataloger är inte tillåtet."
 
-#: inc/admin.inc:573
+#: inc/admin.inc:574
 msgid "%dirname is not accepted as a proper directory name."
 msgstr "%dirname accepteras inte som ett giltigt katalognamn."
 
 #: inc/js.inc:32
-#: inc/page.inc:116;173
+#: inc/page.inc:118;178
 msgid "Create thumbnails"
 msgstr "Skapa miniatyrbilder"
 
-#: inc/page.inc:103
+#: inc/page.inc:105
 msgid "File"
 msgstr "Fil"
 
-#: inc/page.inc:120
+#: inc/page.inc:122
 msgid "Upload file"
 msgstr "Ladda upp fil"
 
-#: inc/page.inc:134
+#: inc/page.inc:135
 msgid "Selected files"
 msgstr "Valda filer"
 
-#: inc/page.inc:197
+#: inc/page.inc:202
 msgid "Width x Height"
 msgstr "Bredd x Höjd"
 
-#: inc/page.inc:216
+#: inc/page.inc:221
 msgid "Create a new image"
 msgstr "Skapa en ny bild"
 
-#: inc/page.inc:230
+#: inc/page.inc:235
 #: js/imce.js:0
 msgid "Please select a file."
 msgstr "Var vänlig välj en fil."
 
-#: inc/page.inc:238
+#: inc/page.inc:243
 #: js/imce.js:0
 msgid "You are not allowed to operate on more than %num files."
 msgstr "Du har inte tillåtelse att hantera mer än %num filer i taget."
 
-#: inc/page.inc:245
+#: inc/page.inc:250
 msgid "directory (%dir)"
 msgstr "katalog (%dir)"
 
-#: inc/page.inc:246
+#: inc/page.inc:251
 msgid "An illegal choice has been detected. Please contact the site administrator."
 msgstr "Ett ogiltigt val har upptäckts. Var vänlig kontakta webbplatsadministratören."
 
-#: inc/page.inc:274
+#: inc/page.inc:279
 msgid "The file is renamed to %filename."
 msgstr "Filen är omdöpt till %filename."
 
-#: inc/page.inc:287
+#: inc/page.inc:292
 msgid "%filename is uploaded."
 msgstr "%filename är uppladdad."
 
-#: inc/page.inc:301
+#: inc/page.inc:306
 msgid "Upload failed."
 msgstr "Uppladdning misslyckades."
 
-#: inc/page.inc:325
+#: inc/page.inc:330
 msgid "File deletion successful: %files."
 msgstr "Radering av filer lyckades: %files."
 
-#: inc/page.inc:342
+#: inc/page.inc:347
 #: js/imce.js:0
 msgid "Please specify dimensions within the allowed range that is from 1x1 to @dimensions."
 msgstr "Var vänlig ange mått inom det tillåtna området som är från 1x1 till @dimensions."
 
-#: inc/page.inc:342
+#: inc/page.inc:347
 #: js/imce.js:0
 #: tpl/imce-content.tpl.php:44;46;47
 msgid "unlimited"
 msgstr "oändlig"
 
-#: inc/page.inc:349
+#: inc/page.inc:354
 msgid "File resizing successful: %files."
 msgstr "Förminskning av filer lyckades: %files."
 
-#: inc/page.inc:396
+#: inc/page.inc:401
 msgid "Thumbnail creation (%thumbnames) successful for %filename."
 msgstr "Skapande av miniatyrbild (%thumbnames) lyckades för %filename."
 
-#: inc/page.inc:429
+#: inc/page.inc:434
 #: js/imce.js:0
 msgid "%filename is not an image."
 msgstr "%filename är inte en bild."
 
-#: inc/page.inc:434
+#: inc/page.inc:439
 msgid "Scaling up is not allowed."
 msgstr "Uppskalning är inte tillåten."
 
-#: inc/page.inc:449
+#: inc/page.inc:454
 msgid "%filename(%dimensions) already exists."
 msgstr "%filename(%dimensions) finns redan."
 
-#: inc/page.inc:465
+#: inc/page.inc:471
 msgid "%filename cannot be resized to %dimensions"
 msgstr "%filename kan inte förminskas till %dimensions"
 
-#: inc/page.inc:478
+#: inc/page.inc:484
 msgid "The selected file %file could not be copied."
 msgstr "Den valda filen %file kunde inte kopieras."
 
-#: inc/page.inc:558
+#: inc/page.inc:564
 msgid "File browser is set to reject the upload of existing files."
 msgstr "Filhanteraren är satt till att vägra uppladdning av nuvarande filer."
 
-#: inc/page.inc:572
+#: inc/page.inc:578
 #: js/imce.js:0
 msgid "Only files with the following extensions are allowed: %files-allowed."
 msgstr "Endast filer med följande filändelser tillåts: %files-allowed."
 
-#: inc/page.inc:586
+#: inc/page.inc:592
 msgid "The file is %filesize exceeding the maximum file size of %maxsize."
 msgstr "Filen är %filesize och överstiger den maximala filstorleken %maxsize."
 
-#: inc/page.inc:668
+#: inc/page.inc:604
+msgid "%filename is %filesize which would exceed your %quota_type. You are currently using %size of %quota."
+msgstr "%filename är %filesize vilket skulle överskrida din %quota_type. Du använder för närvarande %size av %quota."
+
+#: inc/page.inc:675
 msgid "Unable to get a working directory for the file browser!"
 msgstr "Kunde inte hitta en fungerande katalog för filhanteraren!"
 
-#: inc/page.inc:674
+#: inc/page.inc:681
 msgid "There is no valid directory specified for the file browser!"
 msgstr "Det finns ingen giltig katalog specificerad för filhanteraren!"
 
-#: inc/page.inc:677
+#: inc/page.inc:684
 msgid "You don't have access to any configuration profile to use the file browser!"
 msgstr "Du har inte tillgång till någon inställningsprofil för att använda filhanteraren!"
 
-#: inc/page.inc:927
+#: inc/page.inc:958
 msgid "Directory root"
 msgstr "Katalogrot"
 
-#: inc/page.inc:245
+#: inc/page.inc:250
 msgid "Illegal choice %choice in !name element."
 msgstr "Ogiltigt val (%choice) i elementet !name."
 

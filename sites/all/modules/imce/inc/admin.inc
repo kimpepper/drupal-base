@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.inc,v 1.5.2.5 2008/06/10 08:39:09 ufku Exp $
+// $Id: admin.inc,v 1.5.2.6 2009/02/09 18:24:36 ufku Exp $
 
 /**
  * Admin main page.
@@ -74,6 +74,15 @@ function imce_admin_form(&$form_state) {
       FILE_EXISTS_REPLACE => t('Replace the existing file with the new one')
     ),
   );
+  $form['common']['thumb_method'] = array(
+    '#type' => 'radios',
+    '#title' => t('Default method for creating thumbnails'),
+    '#default_value' => variable_get('imce_settings_thumb_method', 'scale_and_crop'),
+    '#options' => array(
+      'scale' => t('Scale the image with respect to the thumbnail dimensions.'),
+      'scale_and_crop' => t('First scale then crop the image to fit the thumbnail dimensions.')
+    ),
+  );
 
   $form['submit'] = array('#type' => 'submit', '#value' => t('Save configuration'));
   $form['#theme'] = 'imce_admin';
@@ -126,6 +135,7 @@ function imce_admin_submit($form, &$form_state) {
   variable_set('imce_settings_textarea', $form_state['values']['textarea']);
   variable_set('imce_settings_absurls', $form_state['values']['absurls']);
   variable_set('imce_settings_replace', $form_state['values']['replace']);
+  variable_set('imce_settings_thumb_method', $form_state['values']['thumb_method']);
   drupal_set_message(t('Changes have been saved.'));
 }
 
