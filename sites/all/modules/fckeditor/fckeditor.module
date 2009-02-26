@@ -1,5 +1,5 @@
 <?php
-// $Id: fckeditor.module,v 1.20.2.76 2008/12/12 20:42:13 wwalc Exp $
+// $Id: fckeditor.module,v 1.20.2.89 2009/01/23 15:15:12 wwalc Exp $
 /**
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2008 Frederico Caldeira Knabben
@@ -75,7 +75,7 @@ function fckeditor_help($path, $arg) {
       '!fckeditorlink' => l(t('FCKeditor homepage'), 'http://www.fckeditor.net'),
       '!userguidelink' => l(t('FCKeditor userguide'), 'http://docs.fckeditor.net/FCKeditor/Users_Guide'))
       );
-      $output .= t('<h3>Configuration</h3><ol><li>Go to the !fckeditorlink and download the latest version of FCKeditor. Then uncompress the contents of the "fckeditor" directory of the downloaded file to %fckeditordir.</li><li>Enable the module as usual from Drupal\'s admin pages.</li><li>Grant permissions for use of FCKeditor in <code>!path2</code><br/>Note: to enable the file browser, read also the <i>How to enable the file browser</i> section.</li><li>Under <code>!path1</code>, adjust the fckeditor profiles. In each profile you can choose which textareas will be replaced by FCKeditor, select default toolbar and configure some more advanced settings.</li><li>For the Rich Text Editing to work you also need to configure your !filterlink for the users that may access Rich Text Editing. Either grant those users Full HTML access or use the following: <br/><code>!filter</code>. </li><li>To have a better control over line breaks, you may disable <code>Line break converter</code> in the chosen filter (recommended).</li><li>Modify the fckeditor.config.js file to custom your needs (optional).<br />You may copy the needed configuration lines from the default FCKeditor configuration settings (!fckconfig), the lines in fckeditor.config.js will override most settings.</li></ol>',
+      $output .= t('<h3>Configuration</h3><ol><li>Go to the !fckeditorlink and download the latest version of FCKeditor. Then uncompress the contents of the "fckeditor" directory of the downloaded file to %fckeditordir.</li><li>Enable the module as usual from Drupal\'s admin pages.</li><li>Grant permissions for use of FCKeditor in <code>!path2</code><br />Note: to enable the file browser, read also the <i>How to enable the file browser</i> section.</li><li>Under <code>!path1</code>, adjust the fckeditor profiles. In each profile you can choose which textareas will be replaced by FCKeditor, select default toolbar and configure some more advanced settings.</li><li>For the Rich Text Editing to work you also need to configure your !filterlink for the users that may access Rich Text Editing. Either grant those users Full HTML access or use the following: <br /><code>!filter</code>. </li><li>To have a better control over line breaks, you may disable <code>Line break converter</code> in the chosen filter (recommended).</li><li>Modify the fckeditor.config.js file to custom your needs (optional).<br />You may copy the needed configuration lines from the default FCKeditor configuration settings (!fckconfig), the lines in fckeditor.config.js will override most settings.</li></ol>',
       array(
       '!fckeditorlink' => l(t('FCKeditor homepage'), 'http://www.fckeditor.net/download'),
       '%fckeditordir' => base_path() . drupal_get_path('module', 'fckeditor') .'/fckeditor/',
@@ -115,7 +115,7 @@ function fckeditor_help($path, $arg) {
       )
       );
       // the rest is untranslated for the moment
-      $output .= t("<h3>How to enable the file browser</h3><p>The editor gives the end user the flexibility to create a custom file browser that can be integrated on it. The included file browser allows users to view the content of a specific directory on the server and add new content to that directory (create folders and upload files).</p><p><ol><li>To enable file browsing you need to edit the connector configuration file in your fckeditor module directory, the file should be in:<blockquote><code>!config3</code> <br/> (FCKeditor 2.5+)<br/><br/> or <br/><br/><code>!config1</code><br/> and <br/><code>!config2</code> <br/> (FCKeditor 2.3.x - 2.4.x)</blockquote></p><p>In this file(s) you will need to enable the file browser by adding one line that includes file with the special authentication function for Drupal (<code>filemanager.config.php</code>). Add this code: <blockquote><code>!code1</code><br/> (FCKeditor 2.5+)</blockquote> or <blockquote><code>!code2</code> <br/> (FCKeditor 2.3.x - 2.4.x)</blockquote> straight below this line: <blockquote><code>!code3</code></blockquote> The config.php file also holds some other important settings, please take a look at it and adjust it to your needs (optional).</p></li>",
+      $output .= t("<h3>How to enable the file browser</h3><p>The editor gives the end user the flexibility to create a custom file browser that can be integrated on it. The included file browser allows users to view the content of a specific directory on the server and add new content to that directory (create folders and upload files).</p><p><ol><li>To enable file browsing you need to edit the connector configuration file in your fckeditor module directory, the file should be in:<blockquote><code>!config3</code> <br /> (FCKeditor 2.5+)<br /><br /> or <br /><br /><code>!config1</code><br /> and <br /><code>!config2</code> <br /> (FCKeditor 2.3.x - 2.4.x)</blockquote></p><p>In this file(s) you will need to enable the file browser by adding one line that includes file with the special authentication function for Drupal (<code>filemanager.config.php</code>). Add this code: <blockquote><code>!code1</code><br /> (FCKeditor 2.5+)</blockquote> or <blockquote><code>!code2</code> <br /> (FCKeditor 2.3.x - 2.4.x)</blockquote> straight below this line: <blockquote><code>!code3</code></blockquote> The config.php file also holds some other important settings, please take a look at it and adjust it to your needs (optional).</p></li>",
       array('!config1' => base_path() . drupal_get_path('module', 'fckeditor') ."/fckeditor/editor/filemanager/browser/default/connectors/php/config.php",
       '!config2' => base_path() . drupal_get_path('module', 'fckeditor') ."/fckeditor/editor/filemanager/upload/php/config.php",
       '!config3' => base_path() . drupal_get_path('module', 'fckeditor') ."/fckeditor/editor/filemanager/connectors/php/config.php",
@@ -427,7 +427,7 @@ function fckeditor_profile_validate($edit) {
   //validate fields
   $fields = preg_split("/[\s,]+/", strip_tags($edit['excl_fields']));
   foreach ($fields as $field) {
-    if ($field && !preg_match("/^[a-z]+(\-[[:alnum:]]+)+$/i", $field)) {
+    if ($field && !preg_match("/^[a-z]+(\-[[:alnum:]]+|\\*|\-\\*)+$/i", $field)) {
       $errors['excl_fields'] = t("Invalid field specified: %1", array("%1" => $field));
       break;
     }
@@ -435,8 +435,8 @@ function fckeditor_profile_validate($edit) {
 
   $fields = preg_split("/[\s,]+/", strip_tags($edit['simple_incl_fields']));
   foreach ($fields as $field) {
-    if ($field && !preg_match("/^[a-z]+(\-[[:alnum:]]+)+$/i", $field)) {
-      $errors['excl_fields'] = t("Invalid field specified: %1", array("%1" => $field));
+    if ($field && !preg_match("/^[a-z]+(\-[[:alnum:]]+|\\*|\-\\*)+$/i", $field)) {
+      $errors['simple_incl_fields'] = t("Invalid field specified: %1", array("%1" => $field));
       break;
     }
   }
@@ -453,16 +453,16 @@ function fckeditor_profile_validate($edit) {
   $paths = preg_split("/[\s,]+/", strip_tags($edit['simple_incl_paths']));
   foreach ($paths as $path) {
     if ($path && !preg_match("|^[_a-z0-9-\*/]*$|i", $path)) {
-      $errors['excl_paths'] = t("Invalid path specified: %1", array("%1" => $path));
+      $errors['simple_incl_paths'] = t("Invalid path specified: %1", array("%1" => $path));
       break;
     }
   }
 
   if (variable_get('file_downloads', '') !== FILE_DOWNLOADS_PRIVATE) {
-    if ($edit['UserFilesAbsolutePath'] && !$edit['UserFilesPath']) {
+    if (!empty($edit['UserFilesAbsolutePath']) && empty($edit['UserFilesPath'])) {
       $errors['UserFilesPath'] = t("Path to uploaded files is required.");
     }
-    if ($edit['UserFilesPath'] && !$edit['UserFilesAbsolutePath']) {
+    if (!empty($edit['UserFilesPath']) && empty($edit['UserFilesAbsolutePath'])) {
       $errors['UserFilesPath'] = t("Absolute path to uploaded files is required.");
     }
   }
@@ -488,7 +488,7 @@ function fckeditor_global_profile_validate($edit) {
   //validate fields
   $fields = preg_split("/[\s,]+/", strip_tags($edit['excl_fields']));
   foreach ($fields as $field) {
-    if ($field && !preg_match("/^[a-z]+(\-[[:alnum:]]+)+$/i", $field)) {
+    if ($field && !preg_match("/^[a-z]+(\-[[:alnum:]]+|\\*|\-\\*)+$/i", $field)) {
       $errors['excl_fields'] = t("Invalid field specified: %1", array("%1" => $field));
       break;
     }
@@ -496,7 +496,7 @@ function fckeditor_global_profile_validate($edit) {
 
   $fields = preg_split("/[\s,]+/", strip_tags($edit['simple_incl_fields']));
   foreach ($fields as $field) {
-    if ($field && !preg_match("/^[a-z]+(\-[[:alnum:]]+)+$/i", $field)) {
+    if ($field && !preg_match("/^[a-z]+(\-[[:alnum:]]+|\\*|\-\\*)+$/i", $field)) {
       $errors['excl_fields'] = t("Invalid field specified: %1", array("%1" => $field));
       break;
     }
@@ -802,8 +802,8 @@ function fckeditor_process_textarea($element) {
   static $num = 1;
   static $id2id = array();
   static $processed_elements = array();
-  global $user, $fckeditor_simple_toolbar_ids, $_fckeditor_configuration, $_fckeditor_js_ids;
-
+  global $user, $language, $theme, $theme_info, $base_theme_info, $_fckeditor_configuration, $_fckeditor_js_ids;
+  
   $processed = in_array($element['#id'], $processed_elements);
   
   //hack for module developers that want to disable FCKeditor on their textareas
@@ -982,7 +982,7 @@ function fckeditor_process_textarea($element) {
 ". $js_id .".Config['FormatSource'] = ". ($conf['format_source']=="t"?"true":"false") .";
 ". $js_id .".Config['FormatOutput'] = ". ($conf['format_output']=="t"?"true":"false") .";\n";
     //}
-    
+
     if (function_exists('img_assist_perm')) { //#275158
       drupal_add_js("var fckImgAssistPath = '". base_path() . drupal_get_path('module', 'img_assist') ."';", 'inline');
     }
@@ -1023,8 +1023,15 @@ function fckeditor_process_textarea($element) {
         if (!empty($profile->settings['UserFilesPath'])) $_SESSION['FCKeditor']['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => file_directory_path(), "%u" => $user->uid, "%b" => $host));
         if (!empty($profile->settings['UserFilesAbsolutePath'])) $_SESSION['FCKeditor']['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => file_directory_path(), "%u" => $user->uid, "%b" => base_path(), "%d" => $_SERVER['DOCUMENT_ROOT']));
         if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
-          $_SESSION['FCKeditor']['UserFilesPath'] = url('system/files') .'/';
-          $_SESSION['FCKeditor']['UserFilesAbsolutePath'] = realpath(file_directory_path()) . DIRECTORY_SEPARATOR;
+          $private_dir = trim(isset($global_profile->settings['private_dir']) ? $global_profile->settings['private_dir'] : "", "/\\");
+          if (strlen($private_dir)) {
+            $_SESSION['FCKeditor']['UserFilesPath'] = url('system/files') .'/'. $private_dir .'/';
+            $_SESSION['FCKeditor']['UserFilesAbsolutePath'] = realpath(file_directory_path()) . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
+          }
+          else {
+            $_SESSION['FCKeditor']['UserFilesPath'] = url('system/files') .'/';
+            $_SESSION['FCKeditor']['UserFilesAbsolutePath'] = realpath(file_directory_path()) . DIRECTORY_SEPARATOR;
+          }
         }
       }
       
@@ -1101,8 +1108,8 @@ function fckeditor_process_textarea($element) {
 
     // add custom xml stylesheet if it exists
     if (!empty($conf['css_style']) && $conf['css_style'] == 'theme') {
-      if (file_exists($themepath .'/fckstyles.xml')) {
-        $styles_xml_path = $host . $themepath .'/fckstyles.xml';
+      if (file_exists($themepath .'fckstyles.xml')) {
+        $styles_xml_path = $host . $themepath .'fckstyles.xml';
         $js .= $js_id .".Config['StylesXmlPath'] = \"". $styles_xml_path ."\";\n";
       }
     }
@@ -1113,9 +1120,52 @@ function fckeditor_process_textarea($element) {
     // add custom stylesheet if configured
     // lets hope it exists but we'll leave that to the site admin
     if ($conf['css_mode'] == 'theme') {
-      $css = $themepath .'style.css';
-      if (file_exists($css)) {
-        $js .=  $js_id .".Config['EditorAreaCSS'] = \"". $host . $css .",". $module_full_path ."/fckeditor.css\";";
+      $style_css = $themepath .'style.css';
+      if (!empty($theme_info->stylesheets)) {
+        $editorcss = "\"";
+        // Grab stylesheets from base theme
+        if (!empty($theme_info->base_theme)) {
+          foreach ($base_theme_info as $base) {
+            if (!empty($base->stylesheets['all'])) {
+              foreach ($base->stylesheets['all'] as $stylesheet) {
+                $editorcss .= $host . $stylesheet .",";
+              }
+            }
+            if (!empty($base->stylesheets['screen'])) {
+              foreach ($base->stylesheets['screen'] as $stylesheet) {
+                $editorcss .= $host . $stylesheet .",";
+              }
+            }
+          }
+        }
+        // Grab stylesheets from current theme
+        if (!empty($theme_info->stylesheets['all'])) {
+          foreach ($theme_info->stylesheets['all'] as $stylesheet) {
+            $editorcss .= $host . $stylesheet .",";
+          }
+        }
+        if (!empty($theme_info->stylesheets['screen'])) {
+          foreach ($theme_info->stylesheets['screen'] as $stylesheet) {
+            $editorcss .= $host . $stylesheet .",";
+          }
+        }
+        // Grab stylesheets from color module
+        $color_paths = variable_get('color_'. $theme .'_stylesheets', array());
+        if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
+          if (!empty($color_paths[1])) {
+            $editorcss .= $host . $color_paths[1] .",";
+          }
+        }
+        else { 
+          if (!empty($color_paths[0])) {
+            $editorcss .= $host . $color_paths[0] .",";
+          }
+        }
+        $editorcss .= $module_full_path ."/fckeditor.css\";\n";
+        $js .=  $js_id .".Config['EditorAreaCSS'] = ". $editorcss;
+      }
+      else if (file_exists($style_css)) {
+        $js .=  $js_id .".Config['EditorAreaCSS'] = \"". $host . $style_css .",". $module_full_path ."/fckeditor.css\";";
       }
       else {
         $js .=  $js_id .".Config['EditorAreaCSS'] = \"". $module_full_path ."/fckeditor.css\";";
@@ -1557,7 +1607,7 @@ function fckeditor_global_profile_form_build($sth, $edit) {
   '#prefix' => '<div style="margin-left:20px">',
   '#suffix' => '</div>',
   '#default_value' => !empty($edit->settings['excl_fields']) ? $edit->settings['excl_fields'] : '',
-  '#description' => t("Enter names (HTML ID's) of fields that may or may not have an FCKeditor, depending on the chosen option for the inclusion/exclusion mode.<br />You may separate the different entries by commas, spaces or newlines."),
+  '#description' => t("Enter names (HTML ID's) of fields that may or may not have an FCKeditor, depending on the chosen option for the inclusion/exclusion mode.<br />You may separate the different entries by commas, spaces or newlines.<br />You may also use * as a wildcard character."),
   );
 
   /**
@@ -1582,7 +1632,7 @@ function fckeditor_global_profile_form_build($sth, $edit) {
   '#cols' => 60,
   '#rows' => 5,
   '#default_value' => !empty($edit->settings['simple_incl_fields']) ? $edit->settings['simple_incl_fields'] : '',
-  '#description' => t("Enter names (HTML ID's) of fields that should have the simplified toolbar.<br />If you don't want to use this feature, simply leave this field empty.<br />You may separate the different entries by commas, spaces or newlines."),
+  '#description' => t("Enter names (HTML ID's) of fields that should have the simplified toolbar (!name).<br />If you don't want to use this feature, simply leave this field empty.<br />You may separate the different entries by commas, spaces or newlines.", array("!name" => FCKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)),
   );
 
   $form['fckeditor_exclude_settings']['simple_incl_paths'] = array(
@@ -1591,8 +1641,27 @@ function fckeditor_global_profile_form_build($sth, $edit) {
   '#cols' => 60,
   '#rows' => 5,
   '#default_value' => !empty($edit->settings['simple_incl_paths']) ? $edit->settings['simple_incl_paths'] : '',
-  '#description' => t("Enter drupal paths that should have the simplified toolbar.<br />If you don't want to use this feature, simply leave this field empty.<br />Paths may be used the same way as in the drupal blocks configuration.<br />You may separate the different entries by commas, spaces or newlines.<br />You may also use * as a wildcard character (for example <code>comment/*</code>)."),
+  '#description' => t("Enter drupal paths that should have the simplified toolbar (!name).<br />If you don't want to use this feature, simply leave this field empty.<br />Paths may be used the same way as in the drupal blocks configuration.<br />You may separate the different entries by commas, spaces or newlines.<br />You may also use * as a wildcard character (for example <code>comment/*</code>).", array("!name" => FCKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)),
   );
+
+  if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
+    $form['fckeditor_advanced_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Advanced settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    );
+  
+    $current_private_dir = !isset($edit->settings['private_dir']) ? "" : $edit->settings['private_dir'];
+    $form['fckeditor_advanced_settings']['private_dir'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Location of files uploaded with FCKeditor in the private folder'),
+      '#default_value' => $current_private_dir,
+      '#size' => 40,
+      '#maxlength' => 255,
+      '#description' => t('The path relative to the location of the private directory where FCKeditor should store uploaded files.') .'<br />'. t('<strong>Warning:</strong> FCKeditor does not implement any kind of access protection on files available in this location. All files stored in the directory defined above might be accessible by unathenticated users if there is no information about the file in the Drupal\'s database.') .'<br />'. t('System path to the private folder is: !system_path.', array('!system_path' => realpath(file_directory_path()) . DIRECTORY_SEPARATOR)) .'<br />'. t('Available wildcard characters:<br /><strong>%u</strong> - User ID.') .'<br />'. t('Current path: !path', array('!path' => $current_private_dir .' ('. file_create_path($current_private_dir) .')')),
+    );
+  }
 
   $form['submit'] = array(
   '#type' => 'submit',
@@ -1618,7 +1687,7 @@ function fckeditor_profile_form_build($sth, $edit) {
   $roles = $orig_roles;
 
   if (!empty($edit->rids) && !user_roles(false, 'access fckeditor')) {
-    drupal_set_message(t('You haven\'t assigned <code>!access1</code> !permissions yet.<br/>It is recommended to assign the <code>!access1</code> !permissions before updating FCKeditor profiles.',
+    drupal_set_message(t('You haven\'t assigned <code>!access1</code> !permissions yet.<br />It is recommended to assign the <code>!access1</code> !permissions before updating FCKeditor profiles.',
     array(
     '!access1' => t('access fckeditor'),
     '!permissions' => l(t('permissions'), 'admin/user/permissions'))), 'warning');
@@ -1680,7 +1749,7 @@ function fckeditor_profile_form_build($sth, $edit) {
   $form['security'] = array(
     '#type' => 'fieldset',
     '#title' => t('Security'),
-    '#description' => '<p>' . t("When Drupal saves user data input through a textarea, it's saved in the database in unmodified form. That's why all untrusted textarea input should be run through an input format filter before outputting it to the screen.") . '</p>' .'<p>' . t("Drupal will not, however, filter data for content editor's editing a textarea. Normally, there is no security risk because the unmodified code is displayed as text and will not be rendered as HTML. But with FCKeditor installed, this is not the case, and content editor's are subject to having raw, untrusted code running inside their browsers.") . '</p>' . '<p>' . t("To address this issue, you should select a security filters below to prevent FCKeditor from rendering malicious code. Note that if a textarea's input format is set to \"Full HTML\" (or if the input format of the node doesn't include the filter), FCKeditor will properly ignore the setting below and will not run the code through the security filter.") . '</p>' . '<p>' .  t("If any textareas on your site are accessible to unwanted users, we recommend checking the \"HTML Filter\". You may have other modules installed that provide other kinds of security filters and you may use those as long as you trust them to properly filter out malicious code. Note that not all the filters below are security filters and will provide no protection.") . '</p>',
+    '#description' => '<p>'. t("When Drupal saves user data input through a textarea, it's saved in the database in unmodified form. That's why all untrusted textarea input should be run through an input format filter before outputting it to the screen.") .'</p>'.'<p>'. t("Drupal will not, however, filter data for content editor's editing a textarea. Normally, there is no security risk because the unmodified code is displayed as text and will not be rendered as HTML. But with FCKeditor installed, this is not the case, and content editor's are subject to having raw, untrusted code running inside their browsers.") .'</p>'.'<p>'. t("To address this issue, you should select a security filters below to prevent FCKeditor from rendering malicious code. Note that if a textarea's input format is set to \"Full HTML\" (or if the input format of the node doesn't include the filter), FCKeditor will properly ignore the setting below and will not run the code through the security filter.") .'</p>'.'<p>'. t("If any textareas on your site are accessible to unwanted users, we recommend checking the \"HTML Filter\". You may have other modules installed that provide other kinds of security filters and you may use those as long as you trust them to properly filter out malicious code. Note that not all the filters below are security filters and will provide no protection.") .'</p>',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE
   );
@@ -1695,7 +1764,7 @@ function fckeditor_profile_form_build($sth, $edit) {
   );
   
   //don't bother administrator with filters that definitely are not security filters
-  $modules_with_filters_to_skip = array('amazon_filter', 'asy', 'bbcode', 'blockquote', 'bookpost', 'chessboard', 'citation_filter', 'codefilter', 'collapse_text', 'contextlinks', 'coolfilter', 'dialectic', 'dript', 'dme', 'drutex', 'embedfilter', 'ext_link_page', 'extlink', 'elf', 'flickr', 'flickrstickr', 'footnotes', 'formdefaults', 'freelinking', 'gallery', 'geogebra', 'geshifilter', 'gotwo', 'googtube', 'gotcha', 'gtspam', 'hidden_content', 'img_assist', 'image_filter', 'inlinetags', 'insert_view', 'insertframe', 'insertnode', 'interwiki', 'jlightbox', 'jsmath', 'language_sections', 'link_node', 'lootz', 'markdown', 'marksmarty', 'mobile_codes', 'mykml', 'nofollowlist', 'oagwt', 'paging', 'pathfilter', 'pearwiki_filter', 'php', 'pirate', 'reptag', 'scrippet', 'scripturefilter', 'signwriter', 'slideshowpro', 'smartlinebreakconverter', 'smartypants', 'smileys', 'spamspan', 'spam_tokens', 'spoiler', 'table_altrow', 'tablemanager', 'tableofcontents', 'textile', 'tooltips', 'twikifilter', 'typogrify', 'unwrap', 'urlclass', 'urlicon', 'url_replace_filter', 'username_highlighter', 'video_filter', 'quote');
+  $modules_with_filters_to_skip = array('amazon_filter', 'asy', 'bbcode', 'biblio', 'blockquote', 'bookpost', 'chessboard', 'citation_filter', 'codefilter', 'collapse_text', 'contextlinks', 'coolfilter', 'dialectic', 'dript', 'dme', 'drutex', 'embedfilter', 'ext_link_page', 'extlink', 'elf', 'flickr', 'flickrstickr', 'footnotes', 'formdefaults', 'freelinking', 'gallery', 'geogebra', 'geshifilter', 'gotwo', 'googtube', 'gotcha', 'gtspam', 'hidden_content', 'img_assist', 'image_filter', 'inlinetags', 'insert_view', 'insertframe', 'insertnode', 'interwiki', 'jlightbox', 'jsmath', 'language_sections', 'link_node', 'lootz', 'markdown', 'marksmarty', 'mobile_codes', 'mykml', 'nofollowlist', 'oagwt', 'paging', 'pathfilter', 'pearwiki_filter', 'php', 'pirate', 'reptag', 'scrippet', 'scripturefilter', 'signwriter', 'slideshowpro', 'smartlinebreakconverter', 'smartypants', 'smileys', 'spamspan', 'spam_tokens', 'spoiler', 'table_altrow', 'tablemanager', 'tableofcontents', 'textile', 'tooltips', 'twikifilter', 'typogrify', 'unwrap', 'urlclass', 'urlicon', 'url_replace_filter', 'username_highlighter', 'video_filter', 'quote');
   
   if (!isset($edit->settings['ss'])) {
     $edit->settings['filters']['filter/0'] = 1;
@@ -1762,7 +1831,7 @@ function fckeditor_profile_form_build($sth, $edit) {
   '#prefix' => '<div style="margin-left:20px">',
   '#suffix' => '</div>',
   '#default_value' => !empty($edit->settings['excl_fields']) ? $edit->settings['excl_fields'] : '',
-  '#description' => t("Enter names (HTML ID's) of fields that may or may not have an FCKeditor, depending on the chosen option for the inclusion/exclusion mode.<br />You may separate the different entries by commas, spaces or newlines."),
+  '#description' => t("Enter names (HTML ID's) of fields that may or may not have an FCKeditor, depending on the chosen option for the inclusion/exclusion mode.<br />You may separate the different entries by commas, spaces or newlines.<br />You may also use * as a wildcard character."),
   );
 
   /**
@@ -1786,9 +1855,9 @@ function fckeditor_profile_form_build($sth, $edit) {
   '#title' => t('Force simplified toolbar on the following fields'),
   '#cols' => 60,
   '#rows' => 5,
-  //'#prefix' => t('Here you can define where FCKeditor should force the <code>!simple</code> toolbar.<br/>Useful for smaller textareas where we usually don\'t use very complicated HTML code, like in signatures.', array('!simple' => FCKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)),
+  //'#prefix' => t('Here you can define where FCKeditor should force the <code>!simple</code> toolbar.<br />Useful for smaller textareas where we usually don\'t use very complicated HTML code, like in signatures.', array('!simple' => FCKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)),
   '#default_value' => !empty($edit->settings['simple_incl_fields']) ? $edit->settings['simple_incl_fields'] : '',
-  '#description' => t("Enter names (HTML ID's) of fields that should have the simplified toolbar.<br />If you don't want to use this feature, simply leave this field empty.<br />You may separate the different entries by commas, spaces or newlines."),
+  '#description' => t("Enter names (HTML ID's) of fields that should have the simplified toolbar (!name).<br />If you don't want to use this feature, simply leave this field empty.<br />You may separate the different entries by commas, spaces or newlines.", array("!name" => FCKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)),
   );
 
   $form['fckeditor_exclude_settings']['simple_incl_paths'] = array(
@@ -1796,9 +1865,9 @@ function fckeditor_profile_form_build($sth, $edit) {
   '#title' => t('Force simplified toolbar on the following paths'),
   '#cols' => 60,
   '#rows' => 5,
-  //'#prefix' => t('Here you can define where FCKeditor should force the <code>!simple</code> toolbar.<br/>Useful for smaller textareas where we usually don\'t use very complicated HTML code, like in signatures.', array('!simple' => FCKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)),
+  //'#prefix' => t('Here you can define where FCKeditor should force the <code>!simple</code> toolbar.<br />Useful for smaller textareas where we usually don\'t use very complicated HTML code, like in signatures.', array('!simple' => FCKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)),
   '#default_value' => !empty($edit->settings['simple_incl_paths']) ? $edit->settings['simple_incl_paths'] : '',
-  '#description' => t("Enter drupal paths that should have the simplified toolbar.<br />If you don't want to use this feature, simply leave this field empty.<br />Paths may be used the same way as in the drupal blocks configuration.<br />You may separate the different entries by commas, spaces or newlines.<br />You may also use * as a wildcard character (for example <code>comment/*</code>)."),
+  '#description' => t("Enter drupal paths that should have the simplified toolbar (!name).<br />If you don't want to use this feature, simply leave this field empty.<br />Paths may be used the same way as in the drupal blocks configuration.<br />You may separate the different entries by commas, spaces or newlines.<br />You may also use * as a wildcard character (for example <code>comment/*</code>).", array("!name" => FCKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)),
   );
 
   $form['appearance'] = array(
@@ -1887,7 +1956,7 @@ function fckeditor_profile_form_build($sth, $edit) {
   '#title' => t('Ignore this section, use default settings defined in config files'),
   '#default_value' => $edit->settings['appearance_conf'] ? $edit->settings['appearance_conf'] : 'f',
   '#options' => array('f' => t('false'), 't' => t('true')),
-  '#description' => t('Although it is less handy, defining settings only in config files (<code>fckconfig.js</code> and <code>fckeditor.config.js</code>) will slightly leverage your traffic and improve load time of your site. <br/>Warning: if set to true, all changes made in <code>Editor appearance</code> will have no affect on FCKeditor\'s behaviour.'),
+  '#description' => t('Although it is less handy, defining settings only in config files (<code>fckconfig.js</code> and <code>fckeditor.config.js</code>) will slightly leverage your traffic and improve load time of your site. <br />Warning: if set to true, all changes made in <code>Editor appearance</code> will have no affect on FCKeditor\'s behaviour.'),
   );
   */
 
@@ -1945,7 +2014,7 @@ function fckeditor_profile_form_build($sth, $edit) {
   '#title' => t('Ignore this section, use default settings defined in config files'),
   '#default_value' => $edit->settings['output_conf'] ? $edit->settings['output_conf'] : 'f',
   '#options' => array('f' => t('false'), 't' => t('true')),
-  '#description' => t('Although it is less handy, defining settings only in config files (<code>fckconfig.js</code> and <code>fckeditor.config.js</code>) will slightly leverage your traffic and improve load time of your site. <br/>Warning: if set to true, all changes made in <code>Cleanup and output</code> will have no affect on FCKeditor\'s behaviour.'),
+  '#description' => t('Although it is less handy, defining settings only in config files (<code>fckconfig.js</code> and <code>fckeditor.config.js</code>) will slightly leverage your traffic and improve load time of your site. <br />Warning: if set to true, all changes made in <code>Cleanup and output</code> will have no affect on FCKeditor\'s behaviour.'),
   );
   */
 
@@ -1961,7 +2030,7 @@ function fckeditor_profile_form_build($sth, $edit) {
   '#title' => t('Editor CSS'),
   '#default_value' => !empty($edit->settings['css_mode']) ? $edit->settings['css_mode'] : 'theme',
   '#options' => array('theme' => t('use theme css'), 'self' => t('define css'), 'none' => t('FCKeditor default')),
-  '#description' => t('Defines the CSS to be used in the editor area.<br />use theme css - load style.css from current site theme.<br/>define css - enter path for css file below.<br />FCKeditor default - uses default CSS from editor.')
+  '#description' => t('Defines the CSS to be used in the editor area.<br />use theme css - load style.css from current site theme.<br />define css - enter path for css file below.<br />FCKeditor default - uses default CSS from editor.')
   );
 
   $form['css']['css_path'] = array(
@@ -2042,7 +2111,7 @@ function fckeditor_profile_form_build($sth, $edit) {
     '#default_value' => !empty($edit->settings['UserFilesPath']) ? $edit->settings['UserFilesPath'] : "%b%f/",
     '#size' => 40,
     '#maxlength' => 255,
-    '#description' => t('Path to uploaded files relative to the document root.<br />Available wildcard characters:<br/><strong>%b</strong> - base URL path of the Drupal installation (!base).<br/><strong>%f</strong> - Drupal file system path where the files are stored (!files).<br /><strong>%u</strong> - User ID.<br />Current path: !path', array('!path' => $current_user_files_path, '!files' => file_directory_path(), '!base' => base_path())),
+    '#description' => t('Path to uploaded files relative to the document root.<br />Available wildcard characters:<br /><strong>%b</strong> - base URL path of the Drupal installation (!base).<br /><strong>%f</strong> - Drupal file system path where the files are stored (!files).<br /><strong>%u</strong> - User ID.<br />Current path: !path', array('!path' => $current_user_files_path, '!files' => file_directory_path(), '!base' => base_path())),
   );
 
   $form['fckeditor_upload_settings']['UserFilesAbsolutePath'] = array(
@@ -2051,13 +2120,13 @@ function fckeditor_profile_form_build($sth, $edit) {
     '#default_value' => !empty($edit->settings['UserFilesAbsolutePath']) ? $edit->settings['UserFilesAbsolutePath'] : "%d%b%f/",
     '#size' => 40,
     '#maxlength' => 255,
-    '#description' => t('The path to the local directory (in the server) which points to the path defined above. If empty, FCKeditor will try to discover the right path.<br />Available wildcard characters:<br/><strong>%d</strong> - server path to document root (!root).<br /><strong>%b</strong> - base URL path of the Drupal installation (!base).<br/><strong>%f</strong> - Drupal file system path where the files are stored (!files).<br /><strong>%u</strong> - User ID.<br />Current path: !path', array('!path' => $current_user_files_absolute_path, '!files' => file_directory_path(), '!base' => base_path(), '!root' => $_SERVER['DOCUMENT_ROOT'])),
+    '#description' => t('The path to the local directory (in the server) which points to the path defined above. If empty, FCKeditor will try to discover the right path.<br />Available wildcard characters:<br /><strong>%d</strong> - server path to document root (!root).<br /><strong>%b</strong> - base URL path of the Drupal installation (!base).<br /><strong>%f</strong> - Drupal file system path where the files are stored (!files).<br /><strong>%u</strong> - User ID.<br />Current path: !path', array('!path' => $current_user_files_absolute_path, '!files' => file_directory_path(), '!base' => base_path(), '!root' => $_SERVER['DOCUMENT_ROOT'])),
   );
 
   if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
-    $form['fckeditor_upload_settings']['UserFilesPath']['#description'] = t('Setting relative path to uploaded files has been disabled because private downloads are enabled and this path is calculated automatically.');
+    $form['fckeditor_upload_settings']['UserFilesPath']['#description'] = t('Setting relative path to uploaded files has been disabled because private downloads are enabled and this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <a href="!url">FCKeditor Global Profile</a>.', array('!url' => url('admin/settings/fckeditor/editg')));
     $form['fckeditor_upload_settings']['UserFilesPath']['#disabled'] = TRUE;
-    $form['fckeditor_upload_settings']['UserFilesAbsolutePath']['#description'] = t('Setting path to uploaded files has been disabled because private downloads are enabled and this path is calculated automatically.');
+    $form['fckeditor_upload_settings']['UserFilesAbsolutePath']['#description'] = t('Setting path to uploaded files has been disabled because private downloads are enabled and this path is calculated automatically.To change the location of uploaded files in the private file system, edit the <a href="!url">FCKeditor Global Profile</a>.', array('!global' => url('admin/settings/fckeditor/editg')));
     $form['fckeditor_upload_settings']['UserFilesAbsolutePath']['#disabled'] = TRUE;
   }
 
@@ -2073,7 +2142,7 @@ function fckeditor_profile_form_build($sth, $edit) {
   '#default_value' => !empty($edit->settings['js_conf']) ? $edit->settings['js_conf'] : "",
   '#cols' => 60,
   '#rows' => 5,
-  '#description' => t('Warning: to change FCKeditor configuration globally, you should modify the config file: <code>!fckeditor_config</code>.<br/>Sometimes it is required to change the FCKeditor configuration for selected profile. Use this box to define settings that are uniqe for this profile.<br/>Available options are listed in the !docs.<br/>Warning: if you make something wrong here, FCKeditor may fail to load.<br/>For example to disable some advanced tabs in dialog windows in FCKeditor, add the following: !example',
+  '#description' => t('Warning: to change FCKeditor configuration globally, you should modify the config file: <code>!fckeditor_config</code>.<br />Sometimes it is required to change the FCKeditor configuration for selected profile. Use this box to define settings that are uniqe for this profile.<br />Available options are listed in the !docs.<br />Warning: if you make something wrong here, FCKeditor may fail to load.<br />For example to disable some advanced tabs in dialog windows in FCKeditor, add the following: !example',
   array(
   '!fckeditor_config' => drupal_get_path('module', 'fckeditor') ."/fckeditor.config.js",
   '!docs' => l(t("FCKeditor documentation"), "http://docs.fckeditor.net/FCKeditor_2.x/Developers_Guide/Configuration/Configuration_Options"),
@@ -2122,18 +2191,26 @@ function fckeditor_idsearch($search, $array) {
  *   TRUE if the browser is reasonably capable
  */
 function fckeditor_is_compatible_client() {
-
-  if (!function_exists('version_compare') || version_compare(phpversion(), '5', '<'))
-    $fckeditor_main_file  = drupal_get_path('module', 'fckeditor') .'/fckeditor/fckeditor_php4.php';
-  else
-    $fckeditor_main_file  = drupal_get_path('module', 'fckeditor') .'/fckeditor/fckeditor_php5.php';
+  $fckeditor_main_file = drupal_get_path('module', 'fckeditor') .'/fckeditor/fckeditor.php';
+  if (!function_exists('version_compare') || version_compare(phpversion(), '5', '<')) {
+    $fckeditor_target_file = drupal_get_path('module', 'fckeditor') .'/fckeditor/fckeditor_php4.php';
+  }
+  else {
+    $fckeditor_target_file = drupal_get_path('module', 'fckeditor') .'/fckeditor/fckeditor_php5.php';
+  }
   
-  if (file_exists($fckeditor_main_file)) {
-    include_once $fckeditor_main_file;
+  if (file_exists($fckeditor_target_file)) {
+    include_once $fckeditor_target_file;
+    //FCKeditor 2.6.1+
     if (function_exists('FCKeditor_IsCompatibleBrowser')) {
       return FCKeditor_IsCompatibleBrowser();
     }
     else if (class_exists('FCKeditor')) {
+      //FCKeditor 2.6 with definition of FCKeditor_IsCompatibleBrowser() in fckeditor.php
+      if (filesize($fckeditor_main_file) > 1500) {
+        include_once $fckeditor_main_file;
+      }
+      //FCKeditor 2.5.1 and earlier
       $fck = new FCKeditor('fake');
       return $fck->IsCompatible();
     }
@@ -2222,22 +2299,25 @@ function fckeditor_ask_delete_confirmation($is_global, $profile = "") {
 /**
  * Implementation of hook_file_download(). 
  * Support for private downloads.
+ * FCKeditor does not implement any kind of potection on private files.
  */
 function fckeditor_file_download($file) {
-  if (module_exists('imce') && variable_get('imce_settings_fck', 0)) {
-    return NULL;
-  }
-  if (module_exists('upload')) {
-    $result = db_query("SELECT f.* FROM {files} f WHERE filepath = '%s'", $file);
+  if ($path = file_create_path($file)) {
+    $result = db_query("SELECT f.* FROM {files} f WHERE filepath = '%s'", $path);
     if (db_fetch_object($result)) {
-      return NULL;
+        return NULL;
+    }
+    
+    //No info in DB? Probably a file uploaded with FCKeditor
+    $global_profile = fckeditor_profile_load("FCKeditor Global Profile");
+
+    //Assume that files inside of fckeditor directory belong to the FCKeditor. If private directory is set, let the decision about protection to the user.
+    $private_dir = isset($global_profile->settings['private_dir']) ? $global_profile->settings['private_dir'] : "/";
+    
+    //If path to the file points to the FCKeditor private directory, allow downloading
+    if (strpos($path, file_directory_path() ."/". trim($private_dir, "/\\")) === 0) {
+      $ctype = ($info = @getimagesize($path)) ? $info['mime'] : (function_exists('mime_content_type') ? mime_content_type($path) : 'application/x-download');
+      return array('Content-type: '. $ctype);
     }
   }
-  //it is probably file uploaded with FCKeditor
-  if ($path = file_create_path($file)) {
-    $ctype = ($info = @getimagesize($path)) ? $info['mime'] : (function_exists('mime_content_type') ? mime_content_type($path) : 'application/x-download');
-    return array('Content-type: '. $ctype);
-  }
-  
-  return -1;
 }

@@ -29,6 +29,12 @@
   background-position: 50% 50%;
   border: 1px dashed #dddddd;
 }
+.ibimage_left {
+  float: left;
+}
+.ibimage_right {
+  float: right;
+}
 
 .SC_Panel, .SC_Panel td, .SC_Item, .SC_ItemSelected {
 	background-color: #fff !important;

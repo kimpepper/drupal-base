@@ -1,6 +1,6 @@
 <?php
 
-// $Id: filemanager.config.php,v 1.2.2.4 2008/05/23 11:12:10 wwalc Exp $
+// $Id: filemanager.config.php,v 1.2.2.5 2008/12/23 15:37:41 wwalc Exp $
 /**
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2008 Frederico Caldeira Knabben
@@ -30,6 +30,8 @@
  * - authenticate users that are allowed to use file browser
  * - redefine the $Config['UserFilesPath'] and $Config['UserFilesAbsolutePath'] according to the values set in FCKeditor profile
  */
+
+$GLOBALS['devel_shutdown'] = FALSE;
 
 $fck_user_files_path = "";
 $fck_user_files_absolute_path = "";

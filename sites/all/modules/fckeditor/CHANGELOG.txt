@@ -1,4 +1,26 @@
-$Id: CHANGELOG.txt,v 1.2.2.78 2008/12/12 23:21:29 wwalc Exp $
+$Id: CHANGELOG.txt,v 1.2.2.89 2009/01/23 13:38:03 wwalc Exp $
+
+-- 2009-01-23 version 6.x-1.x-dev
+* #352704 Fixed: moving an image corrupts its path 
+* #323844 Fixed: loading (sub)theme stylesheets
+
+-- 2009-01-20 version 6.x-1.x-dev
+* #350155 Fixed: double slash in path to fckstyles.xml
+* #355576 Added better explanation of what simplified toolbar really is
+* #347133 Disabled FCKeditor by default on admin/settings/actions/configure
+
+-- 2009-01-19 version 6.x-1.x-dev
+* #360599 Improved ImageBrowser integration
+
+-- 2008-12-23 version 6.x-1.x-dev
+* Fixed built-in file browser issues when Devel module is enabled
+
+-- 2008-12-18 version 6.x-1.x-dev
+* #347865 Fixed: invalid implementation of hook_file_download
+* Added hack for #248146 (problems with the upload module in FF2)
+
+-- 2008-12-17 version 6.x-1.x-dev
+* Fixed validation of asterisk in the exclude/include settings
 
 -- 2008-12-12 version 6.x-1.x-dev
 * #338923 Improved description of security setting

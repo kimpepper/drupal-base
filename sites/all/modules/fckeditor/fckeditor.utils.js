@@ -1,4 +1,4 @@
-// $Id: fckeditor.utils.js,v 1.2.2.25 2008/12/12 20:27:03 wwalc Exp $
+// $Id: fckeditor.utils.js,v 1.2.2.27 2008/12/18 13:22:55 wwalc Exp $
 var fckIsRunning = new Array;
 var fckIsLaunching = new Array;
 var fckLaunchedTextareaId = new Array;
@@ -167,6 +167,10 @@ function doFCKeditorSave(){
 
 function DoFCKeditorTeaserStuff()
 {
+  //bad hack for #248146
+  if ($('#ahah-progress-edit-attach').length) {
+    return false;
+  }
     for( var i = 0 ; i < fckLaunchedJsId.length ; i++ ) {
       if ( document.getElementById( fckLaunchedTextareaId[i] ).style.display == 'none' )
       {

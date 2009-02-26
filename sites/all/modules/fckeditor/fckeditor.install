@@ -1,5 +1,5 @@
 <?php
-// $Id: fckeditor.install,v 1.2.2.23 2008/12/04 16:39:08 wwalc Exp $
+// $Id: fckeditor.install,v 1.2.2.24 2009/01/20 13:29:30 wwalc Exp $
 
 /*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
@@ -133,7 +133,8 @@ function fckeditor_install() {
   "edit-target\n"
   );
   
-  $arr['excl_paths'] = "admin/*/logintoboggan\n";
+  $arr['excl_paths'] = "admin/*/logintoboggan\n".
+  "admin/settings/actions/configure/*\n";
 
   //force by default simple toolbar on selected textareas
   $arr['simple_incl_mode'] = 1;
