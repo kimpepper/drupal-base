@@ -1,0 +1,12 @@
+; $Id: drush_extras.info,v 1.1 2008/12/07 05:12:11 weitzman Exp $
+name = Drush extras
+description = Useful Drush commands. Requires Drush core.
+package = Development
+core = 6.x
+
+; Information added by drupal.org packaging script on 2009-01-16
+version = "6.x-2.0-alpha1"
+core = "6.x"
+project = "drush_extras"
+datestamp = "1232137828"
+
