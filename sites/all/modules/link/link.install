@@ -1,5 +1,5 @@
 <?php
-// $Id: link.install,v 1.5.2.3 2008/09/22 05:23:16 quicksketch Exp $
+// $Id: link.install,v 1.5.2.4 2009/02/25 16:50:55 quicksketch Exp $
 
 /**
  * Implementation of hook_install().
@@ -38,4 +38,14 @@ function link_disable() {
  */
 function link_update_last_removed() {
   return 1;
+}
+
+/**
+ * Ensure that content.module is updated before link module.
+ */
+function link_update_6000() {
+  if ($abort = content_check_update('link')) {
+    return $abort;
+  }
+  return array();
 }
