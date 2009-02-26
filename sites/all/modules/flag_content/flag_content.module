@@ -1,0 +1,519 @@
+<?php
+// Copyright 2006-2007 Khalid Baheyeldin http://2bits.com
+
+define('FLAG_CONTENT_NODE_TYPE',    'flag_content_node_type_');
+define('FLAG_CONTENT_PERM_ADD',     'flag content');
+define('FLAG_CONTENT_PERM_ADMIN',   'administer flag content');
+define('FLAG_CONTENT_PERM_MANAGE',  'manage flagged list');
+define('FLAG_CONTENT_EMAIL',        'flag_content_email');
+define('FLAG_CONTENT_USER',         'flag_content_user');
+define('FLAG_CONTENT_COMMENT',      'flag_content_comment');
+define('FLAG_CONTENT_TYPE_NODE',    'node');
+define('FLAG_CONTENT_TYPE_USER',    'user');
+define('FLAG_CONTENT_TYPE_COMMENT', 'comment');
+
+function flag_content_help($section) {
+  switch ($section) {
+    case 'admin/help#flag_content':
+      return t('Allow users to flag nodes, users or comments for the administrator to review.');
+  }
+}
+
+function flag_content_perm() {
+  return array(FLAG_CONTENT_PERM_ADD, FLAG_CONTENT_PERM_MANAGE, FLAG_CONTENT_PERM_ADMIN);
+}
+
+function flag_content_menu() {
+  $items = array();
+    $items['admin/settings/flag_content'] = array(
+      'title'              => 'Flag content',
+      'description'        => 'Settings for the flag content module.',
+      'page callback'      => 'drupal_get_form',
+      'page arguments'     => array('flag_content_admin_settings'),
+      'access arguments'   => array(FLAG_CONTENT_PERM_ADMIN),
+    );
+
+    $items['flag_content/add'] = array(
+      'page callback'      => 'drupal_get_form',
+      'page arguments'     => array('flag_content_add', 2, 3),
+      'type'               => MENU_CALLBACK,
+      'access arguments'   => array(FLAG_CONTENT_PERM_ADD),
+    );
+
+    $items['flag_content/unflag'] = array(
+      'page callback'      => 'drupal_get_form',
+      'page arguments'     => array('flag_content_unflag'),
+      'type'               => MENU_CALLBACK,
+      'access arguments'   => array(FLAG_CONTENT_PERM_MANAGE),
+    );
+
+    $items['admin/content/flag_content'] = array(
+      'page callback'      => 'flag_content_view',
+      'title'              => 'Flagged items',
+      'description'        => 'View, edit, delete flagged nodes, comments, or users.',
+      'access arguments'   => array(FLAG_CONTENT_PERM_MANAGE),
+    );
+  return $items;
+}
+
+function flag_content_admin_settings() {
+  $set = 'types';
+  $form[$set] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Enable flagging for these content types'),
+  );
+
+  foreach(node_get_types() as $node_type) {
+    $type = $node_type->type;
+    $name = $node_type->name;
+    $form[$set][FLAG_CONTENT_NODE_TYPE . $type] = array(
+      '#type' => 'checkbox',
+      '#title' => $name,
+      '#return_value' => 1,
+      '#default_value' => variable_get(FLAG_CONTENT_NODE_TYPE . $type, 0),
+    );
+  }
+  $set = 'other';
+  $form[$set] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Enable flagging for users and comments'),
+  );
+  $form[$set][FLAG_CONTENT_USER] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Flag users'),
+    '#return_value' => 1,
+    '#default_value' => variable_get(FLAG_CONTENT_USER, 0),
+  );
+
+  $form[$set][FLAG_CONTENT_COMMENT] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Flag comments'),
+    '#return_value' => 1,
+    '#default_value' => variable_get(FLAG_CONTENT_COMMENT, 0),
+  );
+
+  $form['email'][FLAG_CONTENT_EMAIL] = array(
+    '#type' => 'textfield',
+    '#title' => t('Email address'),
+    '#size' => 60,
+    '#maxlength' => 128,
+    '#required' => true,
+    '#default_value' => variable_get(FLAG_CONTENT_EMAIL, variable_get('site_mail', ini_get('sendmail_from'))),
+    '#description' => t('Email address to send alerts on flagged items to.'),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ *  Implementation of hook_user().
+ */
+function flag_content_user($op, &$edit, &$account) {
+  global $user;
+  switch($op) {
+    case 'view':
+      if ($user->uid == $account->uid) {
+        // User is viewing their own user page, don't show them anything
+        return array();
+      }
+
+      $links = flag_content_link(FLAG_CONTENT_TYPE_USER, $account);
+      
+      foreach($links as $key => $value) {
+        $class = $key;
+        $title = $value['title'];
+        $href = $value['href'];
+        $attributes = $value['attributes'];
+      }
+      $account->content['summary']['flag_content'] = array(
+        '#type' => 'user_profile_item',
+        '#title' => t('Flag user'),          
+        '#attributes' => array('class' => $class),
+        '#value' => l($title, $href),
+      );
+      
+    break;
+    case 'delete':
+      db_query("DELETE FROM {flag_content} WHERE eid = %d AND type = '%s'", $account->uid, FLAG_CONTENT_TYPE_USER);
+      break;
+   }
+}
+
+/**
+ *  Implementation of hook_comment().
+ */
+function flag_content_comment($a1, $op) {
+  switch ($op) {
+    case 'delete':
+      db_query("DELETE FROM {flag_content} WHERE eid = %d AND type = '%s'", $a1->cid, FLAG_CONTENT_TYPE_COMMENT);
+      break;
+  }
+}
+
+/**
+ *  Implementation of hook_link().
+ *  $entry is actually $node but since this is supporting both users and nodes, we call it $entry (eventually support comments?)
+ */
+
+function flag_content_link($type, $entry = null, $teaser = false) {
+  global $user;
+  $links = array();
+  
+  // Do not allow users to flag themselves.
+  if ($type == FLAG_CONTENT_TYPE_USER && $entry->uid == $user->uid) {
+    return $links;
+  }
+  
+  if (user_access(FLAG_CONTENT_PERM_ADD)) {
+    switch ($type) {
+      case FLAG_CONTENT_TYPE_NODE:
+        if (variable_get(FLAG_CONTENT_NODE_TYPE . $entry->type, 0)) {
+          $eid = $entry->nid;
+        }
+        break;
+      case FLAG_CONTENT_TYPE_USER:
+        if (variable_get(FLAG_CONTENT_USER, 0)) {
+          $eid = $entry->uid;
+        }
+        break;
+      case FLAG_CONTENT_TYPE_COMMENT:
+        if (variable_get(FLAG_CONTENT_COMMENT, 0)) {
+          $eid = $entry->cid;
+        }
+        break;
+    }
+    
+    if (is_numeric($eid)) {
+      $options = array('class' => 'flag_content');
+  
+      if (!_flag_content_check($eid, $type)) {
+        // Not already flagged, flag it for admin
+        $links['flag_content_add'] = array(
+          'title' => t('flag this'),
+          'href' => "flag_content/add/$eid/$type",
+          'attributes' => array(
+            'class' => 'flag_content',
+            'title' => t('Notify the administrators this posting is problematic'),
+            'rel' => 'nofollow'
+            )
+          );
+      }
+      else {
+        // If has admin privileges, show an unflag link
+        if (user_access(FLAG_CONTENT_PERM_MANAGE)) {
+          $links['flag_content_unflag'] = array(
+            'title' => t('unflag'),
+            'href' => "flag_content/unflag/$eid/$type",
+            'attributes' => array(
+              'class' => 'flag_content',
+              'title' => t('Remove flagged marking'),
+              'rel' => 'nofollow'
+              )
+            );
+        }
+        else {
+          // Otherwise just show it as flagged
+          $links['flag_content_remove_flag'] = array(
+            'title' => t('flagged'),
+          );
+        }
+      }
+    }
+  }
+  
+  return $links;
+}
+
+function flag_content_add(&$form_state, $eid = 0, $type = FLAG_CONTENT_TYPE_NODE) {
+  switch ($type) {
+    case FLAG_CONTENT_TYPE_NODE:
+      $node = node_load($eid);
+      $title = $node->title;
+      $type_label = $node->type;
+      $path = $type . '/' . $eid;
+      break;
+    case FLAG_CONTENT_TYPE_USER:
+      $account = user_load(array('uid' => $eid));
+      $title = $account->name;
+      $type_label = $type;
+      $path = $type . '/' . $eid;
+      break;
+    case FLAG_CONTENT_TYPE_COMMENT:
+      $comment = db_fetch_object(db_query('SELECT * FROM {comments} WHERE cid = %d', $eid));
+      $title = $comment->subject;
+      $type_label = $type;
+      $path = "node/$comment->nid";
+      break;
+  }
+  
+  $form['eid'] = array(
+    '#type' => 'hidden',
+    '#value' => $eid,
+  );
+
+  $form['type'] = array(
+    '#type' => 'hidden',
+    '#value' => $type,
+  );
+
+  return confirm_form(
+    $form,
+    t('Are you sure you want to flag the @type @title', array('@type' => $type_label, '@title' => $title)),
+    !empty($_GET['destination']) ? $_GET['destination'] : $path,
+    t(''),
+    t('Flag'),
+    t('Cancel'));
+}
+
+function flag_content_add_submit($form, &$form_state) {
+  global $user;
+  $eid = $form_state['values']['eid'];
+  $type = $form_state['values']['type'];
+  if ($eid && $type) {
+    // Insert the data into the table
+    db_query("INSERT INTO {flag_content} (fid, eid, uid, type, timestamp) VALUES (0, %d, %d, '%s', %d)",
+      $eid, $user->uid, $type, time());
+    // Prepare the data
+    switch ($type) {
+      case FLAG_CONTENT_TYPE_NODE:
+        $entry = node_load(array('nid' => $eid));
+        $path = $type . '/' . $eid;
+        $title = $entry->title;
+        break;
+      case FLAG_CONTENT_TYPE_USER:
+        $entry = user_load(array('uid' => $eid));
+        $path = $type . '/' . $eid;
+        $title = $entry->name;
+        break;
+      case FLAG_CONTENT_TYPE_COMMENT:
+        $entry = db_fetch_object(db_query('SELECT * FROM {comments} WHERE cid = %d', $eid));
+        $path = "node/$entry->nid";
+        $title = $entry->subject;
+        break;
+    }
+
+    // Email the admin
+    $params = array(
+      'entry' => $entry,
+      'type'  => $type,
+    );
+
+    $to = check_plain(variable_get(FLAG_CONTENT_EMAIL, variable_get('site_mail', ini_get('sendmail_from'))));
+
+    if ($user->uid) {
+      $from = $user->mail;
+    }
+    else {
+      $from = variable_get('site_mail', '');
+    }
+
+    $from = check_plain($from);
+
+    drupal_mail('flag_content', 'flag_content_admin', $to, language_default(), $params, $from);
+
+    // Log the operation:
+    watchdog('flag content', t("@name flagged item @entry for review.",
+      array ('@name' => theme('placeholder', $user->name ." <" . $from . ">"), '@entry' => l($title, $path))));
+
+    // Give feedback to the user
+    drupal_set_message(t('The @type was flagged for the administrator', array('@type' => $type == FLAG_CONTENT_TYPE_NODE ? t('item') : $type)));
+  }
+
+  $form_state['redirect'] = !empty($_GET['destination']) ? $_GET['destination'] : $path;
+}
+
+function flag_content_mail($key, &$message, $params = array()) {
+  global $user, $base_url;
+
+  $type  = $params['type'];
+  $entry = $params['entry'];
+
+  switch ($type) {
+    case FLAG_CONTENT_TYPE_NODE:
+      $title = $entry->title;
+      $eid = $entry->nid;
+      $path = "$type/$eid";
+      break;
+
+    case FLAG_CONTENT_TYPE_USER:
+      $title = $entry->name;
+      $eid = $entry->uid;
+      $path = "$type/$eid";
+      break;
+
+    case FLAG_CONTENT_TYPE_COMMENT:
+      $title = $entry->subject;
+      $eid = $entry->cid;
+      $path = url('node/' . $entry->nid, array('absolute' => TRUE)) . "#comment-" . $entry->cid;
+      break;
+  }
+
+  if ($user->uid) {
+    $name = $user->name;
+    $user_url = $base_url . base_path() . "user/$user->uid";
+  }
+  else {
+    $name = variable_get('anonymous', 'Anonymous');
+    $user_url = t('n/a');
+  }
+  $name = check_plain($name);
+
+  $site = variable_get('site_name', 'drupal site');
+
+  $subject = "[Flag]: [$title] from [$site]";
+  $message['subject'] = $subject;
+
+  $body  = t("The following user flagged an item for your review.\n\nUser: @name (@user_url)", array(
+    '@name'     => $name,
+    '@user_url' => $user_url,
+    ));
+  $body .= t("\nItem: @title (@entry_url)", array(
+    '@title'     => $title,
+    '@entry_url' => $base_url . base_path() . $path,
+    ));
+
+  $body .= t("\n\nManage the flagged items list at @manage", array(
+    '@manage' => $base_url . base_path() . 'admin/content/flag_content',
+    ));
+
+  $message['body'] = $body;
+}
+
+function flag_content_unflag(&$form_state, $eid = 0, $type = FLAG_CONTENT_TYPE_NODE) {
+  switch ($type) {
+    case FLAG_CONTENT_TYPE_NODE:
+      $node = node_load($eid);
+      $title = $node->title;
+      $type_label = $node->type;
+      break;
+    case FLAG_CONTENT_TYPE_USER:
+      $account = user_load(array('uid' => $eid));
+      $title = $account->name;
+      $type_label = $type;
+      break;
+    case FLAG_CONTENT_TYPE_COMMENT:
+      $comment = db_fetch_object(db_query('SELECT * FROM {comments} WHERE cid = %d', $eid));
+      $title = $comment->subject;
+      $type_label = $type;
+      break;
+  }
+
+  $form['eid'] = array(
+    '#type' => 'hidden',
+    '#value' => $eid,
+  );
+  $form['type'] = array(
+    '#type' => 'hidden',
+    '#value' => $type,
+  );
+  return confirm_form(
+    $form,
+    t('Are you sure you want to unflag the @type @title', array('@type' => $type_label, '@title' => $title)),
+    !empty($_GET['destination']) ? $_GET['destination'] : $type. '/'. $eid,
+    t(''),
+    t('Unflag'),
+    t('Cancel'));
+}
+
+function flag_content_unflag_submit($form, &$form_state) {
+  $eid = $form_state['values']['eid'];
+  $type = $form_state['values']['type'];
+  if ($eid && $type) {
+    _flag_content_unflag($eid, $type);
+    drupal_set_message(t('The @type was unflagged.', array('@type' => $type == FLAG_CONTENT_TYPE_NODE ? t('item') : $type)));
+  }
+  $form_state['redirect'] = 'admin/content/flag_content';
+}
+
+function flag_content_view() {
+  print theme('page', theme('flag_content_view', _flag_content_get_list()));
+}
+
+function theme_flag_content_view($list = array()) {
+  $rows = array();
+  $header = array(t('Item'), t('Type'), t('Flagged by'), t('Date'), t('Operations'));
+  if (!empty($list)) {
+    foreach($list as $entry) {
+      switch ($entry->type) {
+        case FLAG_CONTENT_TYPE_NODE:
+          $node = node_load(array('nid' => $entry->eid));
+          $title = l($node->title, 'node/'. $node->nid, array('title' => $node->title)); 
+          $author = theme('username', user_load(array('uid' => $node->uid)));
+          $item = t('!title - (author: !author)', array('!title' => $title, '!author' => $author));
+          $edit = "node/$entry->eid/edit";
+          $delete = "node/$entry->eid/delete";
+          $type = $node->type;
+          break;
+        case FLAG_CONTENT_TYPE_USER:
+          $item = theme('username', user_load(array('uid' => $entry->eid)));
+          $edit = "user/$entry->eid/edit";
+          $delete = "user/$entry->eid/delete";
+          $type = $entry->type;
+          break;
+        case FLAG_CONTENT_TYPE_COMMENT:
+          $comment = db_fetch_object(db_query('SELECT * FROM {comments} WHERE cid = %d', $entry->eid));
+          $subject = $comment->subject ? $comment->subject : 'comment';
+          $item = l($subject, url('node/' . $comment->nid, array('absolute' => TRUE)) . "#comment-" . $comment->cid);
+          $edit = "comment/edit/$comment->cid";
+          $delete = "comment/delete/$comment->cid";
+          $type = $entry->type;
+          break;
+      }
+
+      $timestamp = format_date($entry->timestamp, 'custom', 'Y-m-d H:i');
+      $by = theme('username', user_load(array('uid' => $entry->uid)));
+      $ops = l(t('edit'), $edit);
+      $ops .= ' ' . l(t('unflag'), "flag_content/unflag/$entry->eid/$entry->type");
+      $ops .= ' ' . l(t('delete'), $delete);
+      $rows[] = array($item, $type, $by, $timestamp, $ops);
+    }
+  }
+  else {
+    $rows[] = array('data' => array(t('No flagged items.')));
+  }
+  return theme('table', $header, $rows);
+}
+
+function flag_content_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+  switch ($op) {
+    case 'delete':
+      // Node is being deleted, delete it from the flag_content table
+      _flag_content_unflag($node->nid);
+      break;
+  }
+}
+
+function _flag_content_unflag($eid, $type = FLAG_CONTENT_TYPE_NODE) {
+  db_query("DELETE FROM {flag_content} WHERE eid = %d AND type = '%s'", $eid, $type);
+}
+
+function _flag_content_get_list() {
+  $rows = array();
+  $result = db_query("SELECT * FROM {flag_content} ORDER BY timestamp ASC");
+  while ($row = db_fetch_object($result)) {
+    $rows[$row->fid] = $row;
+  }
+  return $rows;
+}
+
+function _flag_content_check($eid, $type = FLAG_CONTENT_TYPE_NODE) {  
+  global $user;
+  return db_result(db_query("SELECT COUNT(*) FROM {flag_content} WHERE eid = %d AND type = '%s'", $eid, $type));
+}
+
+
+function flag_content_theme() {
+  return array(
+    'flag_content_view' => array(
+      'arguments' => array(
+        'list' => NULL,
+      ),
+    ),
+    'flag_content_mail' => array(
+      'arguments' => array(
+        'entry' => NULL,
+        'type'  => NULL,
+      ),
+    ),
+  );
+}

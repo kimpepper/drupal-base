@@ -1,0 +1,13 @@
+; $Id: simplead_block.info,v 1.1 2008/06/15 23:11:52 rainstyle Exp $
+name = Simple Ads
+description = Place ad block on your site but simply pasting the code provided by Google or any other ad company.
+core = 6.x
+package = Advertising
+
+
+; Information added by drupal.org packaging script on 2008-07-31
+version = "6.x-1.2"
+core = "6.x"
+project = "simplead_block"
+datestamp = "1217469618"
+

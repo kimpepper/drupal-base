@@ -1,0 +1,15 @@
+; $Id: drush_pm_cvs.info,v 1.3.2.1 2008/08/11 00:36:25 weitzman Exp $
+name = Drush package manager CVS support
+description = Allows drush to install and update modules using CVS.
+package = Drush
+dependencies[] = update
+dependencies[] = drush
+dependencies[] = drush_pm
+core = 6.x
+
+; Information added by drupal.org packaging script on 2008-12-01
+version = "6.x-1.2"
+core = "6.x"
+project = "drush"
+datestamp = "1228148107"
+

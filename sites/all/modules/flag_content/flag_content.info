@@ -1,0 +1,10 @@
+name = Flag content
+description = Allow users to flag content for the attention of the administrator or moderators.
+version = VERSION
+core = 6.x
+; Information added by drupal.org packaging script on 2008-09-19
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "flag_content"
+datestamp = "1221782701"
+

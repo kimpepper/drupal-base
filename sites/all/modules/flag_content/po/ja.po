@@ -1,0 +1,203 @@
+# $Id: ja.po,v 1.2 2007/04/24 12:05:55 imagine Exp $
+# -----------------------------------------------------------------------------
+# Japanese translation of Drupal (flag_content.module)
+#
+# Copyright (c) 2006-2007  Drupal Japan  ( http://drupal.jp/ )  /
+#                          Drupal Nippon ( http://drupon.org/ ) /
+#                          Takafumi      ( jp.drupal@imagine **reverse order**)
+#
+# Generated from file:
+#  flag_content.module,v 1.6.2.5 2007/04/19 17:00:17 kbahey
+#  flag_content.info,v 1.1.2.1 2007/04/09 02:53:38 kbahey
+#
+# -----------------------------------------------------------------------------
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2007-04-20 20:35+0900\n"
+"Last-Translator: Takafumi <jp.drupal@imagine **reverse order**>\n"
+"Language-Team: Drupal Japan / Drupal Nippon\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: flag_content.module:33
+msgid "Settings for the flag content module."
+msgstr "フラグコンテンツモジュールの設定をします。"
+
+#: flag_content.module:58
+msgid "Flagged items"
+msgstr "フラグ付けされたアイテム"
+
+#: flag_content.module:59
+msgid "View, edit, delete flagged nodes, comments, or users."
+msgstr "フラグ付けされたノード、コメント、ユーザの、表示、編集、削除を行います。"
+
+#: flag_content.module:70
+msgid "Enable flagging for these content types"
+msgstr "フラグ付けを有効にするコンテンツタイプを指定してください"
+
+#: flag_content.module:86
+msgid "Enable flagging for users and comments"
+msgstr "ユーザとコメントのフラグ付けを有効にするかどうかを指定してください"
+
+#: flag_content.module:90
+msgid "Flag users"
+msgstr "ユーザのフラグ"
+
+#: flag_content.module:97
+msgid "Flag comments"
+msgstr "コメントのフラグ"
+
+#: flag_content.module:104
+msgid "Email address"
+msgstr "メールアドレス"
+
+#: flag_content.module:109
+msgid "Email address to send alerts on flagged items to."
+msgstr "フラグ付けされたアイテムの警告を送信するメールアドレスを入力してください。"
+
+#: flag_content.module:124
+msgid "Flag user"
+msgstr "ユーザのフラグ"
+
+#: flag_content.module:188
+msgid "flag this"
+msgstr "フラグを立てる"
+
+#: flag_content.module:192
+msgid "Notify the administrators this posting is problematic"
+msgstr "「この投稿には問題がある」と管理者に通知します"
+
+#: flag_content.module:200;389
+msgid "unflag"
+msgstr "フラグ解除"
+
+#: flag_content.module:204
+msgid "Remove flagged marking"
+msgstr "フラグ付けを解除します"
+
+#: flag_content.module:211
+msgid "flagged"
+msgstr "フラグ付け済"
+
+#: flag_content.module:255
+msgid "Are you sure you want to flag the @type @title"
+msgstr "本当に、@title（@type）にフラグを立ててもよろしいですか？"
+
+#: flag_content.module:258
+msgid "Flag"
+msgstr "フラグ"
+
+#: flag_content.module:259;337
+#msgid "Cancel"
+#msgstr "キャンセル"
+
+#: flag_content.module:294
+msgid "@name flagged item @entry for review."
+msgstr "再検討のために @name がアイテム @entry にフラグを立てました。"
+
+#: flag_content.module:298
+msgid "The @type was flagged for the administrator"
+msgstr "管理者のために@typeにフラグを立てました。"
+
+#: flag_content.module:298;345
+msgid "item"
+msgstr "アイテム"
+
+#: flag_content.module:333
+msgid "Are you sure you want to unflag the @type @title"
+msgstr "本当に、@title（@type）のフラグ付けを解除しますか？"
+
+#: flag_content.module:336
+msgid "Unflag"
+msgstr "フラグ付けの解除"
+
+#: flag_content.module:345
+msgid "The @type was unflagged."
+msgstr "@typeへのフラグ付けが解除されました。"
+
+#: flag_content.module:356
+msgid "Item"
+msgstr "アイテム"
+
+#: flag_content.module:356
+#msgid "Type"
+#msgstr "タイプ"
+
+#: flag_content.module:356
+msgid "Flagged by"
+msgstr "報告者"
+
+#: flag_content.module:356
+#msgid "Date"
+#msgstr "日付"
+
+#: flag_content.module:356
+#msgid "Operations"
+#msgstr "操作"
+
+#: flag_content.module:364
+msgid "!title - (author: !author)"
+msgstr "!title - （投稿者： !author）"
+
+#: flag_content.module:388
+#msgid "edit"
+#msgstr "編集"
+
+#: flag_content.module:390
+#msgid "delete"
+#msgstr "削除"
+
+#: flag_content.module:395
+msgid "No flagged items."
+msgstr "フラグを立てられたアイテムはありません。"
+
+#: flag_content.module:455
+#msgid "n/a"
+#msgstr "N/A"
+
+#: flag_content.module:460
+msgid ""
+"The following user flagged an item for your review.\n"
+"\n"
+"User: @name (@user_url)"
+msgstr ""
+"以下のユーザが、あなたに再検討してもらうためにアイテムにフラグを立てました。\n"
+"\n"
+"ユーザ： @name (@user_url)"
+
+#: flag_content.module:464
+msgid ""
+"\n"
+"Item: @title (@entry_url)"
+msgstr ""
+"\n"
+"アイテム： @title (@entry_url)"
+
+#: flag_content.module:469
+msgid ""
+"\n"
+"\n"
+"Manage the flagged items list at @manage"
+msgstr ""
+"\n"
+"\n"
+"@manage でフラグを立てられたアイテムのリストを管理してください"
+
+#: flag_content.module:294
+msgid "flag content"
+msgstr "フラグコンテンツ"
+
+#: flag_content.module:0 flag_content.info:0
+msgid "flag_content"
+msgstr "flag_content"
+
+#: flag_content.module:19 flag_content.info:0
+msgid "Allow users to flag nodes, users or comments for the administrator to review."
+msgstr "管理者に再検討してもらいたいノード、ユーザ、コメントに、ユーザがフラグを立てられるようにします。"
+
+#: flag_content.module:32 flag_content.info:0
+msgid "Flag content"
+msgstr "フラグコンテンツ"
+

@@ -1,0 +1,100 @@
+<?php
+// $Id: simplead_block.module,v 1.1.2.1 2008/07/31 01:49:21 rainstyle Exp $
+
+
+/**
+* Valid permissions for this module
+* @return array An array of valid permissions for the simpleads module
+*/
+
+function simplead_block_perm() {
+  return array('access simplead_block content','administer simplead_block');
+} // function onthisdate_perm()
+
+
+/**
+* Generate HTML for the simplead_block block
+* @param op the operation from the URL
+* @param delta offset
+* @returns block HTML
+*/
+function simplead_block_block($op = 'list', $delta = 0) {
+  $block = array();
+  if($op == 'list') {
+    for($i=0;$i<variable_get('simplead_block_number', '1');$i++) {
+      if($i==0) {
+        $block[0]["info"] = t('Simple Ad Block');
+      } else {
+        $block[$i]["info"] = t('Simple Ad Block '.($i+1));
+      }
+    }
+    return $block;
+  } else if ($op == 'view') {
+    $block['subject'] = 'Advertising';
+    if($delta==0)
+      $block['content'] = variable_get('simplead_block_ad', '');
+    else
+      $block['content'] = variable_get('simplead_block_ad_'.$delta, '');
+    return $block;
+  }
+} // end function onthisdate_block
+
+
+
+function simplead_block_admin() {
+  $form = array();
+  $form['simplead_block_number'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of blocks'),
+    '#default_value' => variable_get('simplead_block_number', '1'),
+    //'#maxlength' => 500,
+    '#description' => t("Specify the number of ad block you want."),
+    '#required' => TRUE,
+  );
+  $n = (int)variable_get('simplead_block_number', '1');
+  if(!$n) $n=1;
+  for($i=0;$i<$n;$i++) {
+    if($i==0) {
+      $form['simplead_block_ad'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Ad Block'),
+        '#default_value' => variable_get('simplead_block_ad', ''),
+        '#maxlength' => 500,
+        '#description' => t("Paste ad block code here"),
+        '#required' => TRUE,
+      );
+    }
+    else {
+      $form['simplead_block_ad_'.$i] = array(
+        '#type' => 'textarea',
+        '#title' => t('Ad Block '.($i+1)),
+        '#default_value' => variable_get('simplead_block_ad_'.$i, ''),
+        '#maxlength' => 500,
+        '#description' => t("Paste ad block code here"),
+        //'#required' => TRUE,
+      );
+    }
+  }
+
+  return system_settings_form($form);
+}
+
+function simplead_block_menu() {
+
+  $items = array();
+
+  $items['admin/settings/simplead_block'] = array(
+    'title' => 'Simple Ad Block module settings',
+    'description' => 'Set ad code',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('simplead_block_admin'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+   );
+
+  return $items;
+}
+
+
+
+

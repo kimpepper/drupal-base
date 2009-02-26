@@ -1,0 +1,13 @@
+; $Id: drush_tools.info,v 1.5.2.1 2008/08/11 00:36:26 weitzman Exp $
+name = Drush toolbox
+description = Provides several tools that are aimed at site administrators and developers.
+package = Drush
+dependencies[] = drush
+core = 6.x
+
+; Information added by drupal.org packaging script on 2008-12-01
+version = "6.x-1.2"
+core = "6.x"
+project = "drush"
+datestamp = "1228148107"
+

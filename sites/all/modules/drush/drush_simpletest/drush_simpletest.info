@@ -1,0 +1,14 @@
+; $Id: drush_simpletest.info,v 1.2.2.1 2008/08/11 00:36:25 weitzman Exp $
+name = Drush simpletest runner
+description = Run unit tests.
+package = Drush
+dependencies[] = drush
+dependencies[] = simpletest
+core = 6.x
+
+; Information added by drupal.org packaging script on 2008-12-01
+version = "6.x-1.2"
+core = "6.x"
+project = "drush"
+datestamp = "1228148107"
+

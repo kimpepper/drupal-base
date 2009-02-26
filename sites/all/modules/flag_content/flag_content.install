@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * Implementation of hook_install()
+ */
+
+function flag_content_install() {
+  drupal_install_schema('flag_content');
+}
+
+/**
+ * Implementation of hook_schema()
+ */
+
+function flag_content_schema() {
+  $schema['flag_content'] = array(
+    'fields' => array(
+      'fid'       => array('type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE, 'defualt' => 0),
+      'eid'       => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'defualt' => 0),
+      'uid'       => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'defualt' => 0),
+      'type'      => array('type' => 'varchar', 'not null' => TRUE, 'length' => 10, 'default' => ''),
+      'timestamp' => array('type' => 'int', 'unsigned' => TRUE),
+    ),
+    'indexes' => array('eid' => array('eid'), 'type' => array('type')),
+    'primary key' => array('fid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_uninstall()
+ */
+function flag_content_uninstall() {
+  drupal_uninstall_schema('flag_content');
+}

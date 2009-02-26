@@ -1,0 +1,12 @@
+; $Id: drush_mm.info,v 1.3 2008/09/17 08:12:18 clemenstolboom Exp $
+name = Drush Module Manager
+description = Allows you to enable/disable modules and generated a graph from the command line.
+dependencies[] = drush
+package = Drush
+core = 6.x
+; Information added by drupal.org packaging script on 2009-01-23
+version = "6.x-1.1"
+core = "6.x"
+project = "drush_mm"
+datestamp = "1232712914"
+
