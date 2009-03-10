@@ -1,8 +1,8 @@
-; $Id: filefield_meta.info,v 1.5 2008/07/31 01:02:15 drewish Exp $
-name = FileField Meta
-description = Add metadata gathering and storage to FileField.
+; $Id: filefield_token.info,v 1.2 2009/02/04 02:55:05 dopry Exp $
+name = FileField Tokens
+description = Token Integration for FileField.
 dependencies[] = filefield
-dependencies[] = getid3
+dependencies[] = token
 package = CCK
 core = 6.x
 php = 5.2
