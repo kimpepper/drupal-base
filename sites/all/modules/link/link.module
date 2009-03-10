@@ -1,5 +1,5 @@
 <?php
-// $Id: link.module,v 1.24.2.32 2008/11/24 11:13:26 mrfelton Exp $
+// $Id: link.module,v 1.24.2.29 2008/09/22 04:20:33 quicksketch Exp $
 
 /**
  * @file
@@ -216,7 +216,7 @@ function link_field($op, &$node, $field, &$items, $teaser, $page) {
 function link_widget_info() {
   return array(
     'link' => array(
-      'label' => 'Link',
+      'label' => 'Text Fields for Title and URL',
       'field types' => array('link'),
       'multiple values' => CONTENT_HANDLE_CORE,
     ),
@@ -434,8 +434,8 @@ function theme_link($element) {
   }
   $output .= '<div class="link-field-url' . (isset($element['title']) ? ' link-field-column' : '') . '">' . theme('textfield', $element['url']) . '</div>';
   $output .= '</div>';
-  if (!empty($element['attributes']['target'])) {
-    $output .= '<div class="link-attributes">' . theme('checkbox', $element['attributes']['target']) . '</div>';
+  if (!empty($element['attributes'])) {
+    $output .= '<div class="link-attributes">' . theme('form_element', $element['attributes'], $element['attributes']['#value']) . '</div>';
   }
   return $output;
 }
@@ -447,6 +447,7 @@ function link_elements() {
   $elements = array();
   $elements['link'] =  array(
     '#input' => TRUE,
+    '#columns' => array('url', 'title'),
     '#process' => array('link_process'),
   );
   return $elements;
@@ -481,12 +482,10 @@ function link_process($element, $edit, $form_state, $form) {
      );
    }
    if (!empty($field['attributes']['target']) && $field['attributes']['target'] == 'user') {
-     $attributes = is_array($element['#value']['attributes'])? $element['#value']['attributes'] : unserialize($element['#value']['attributes']);
      $element['attributes']['target'] = array(
        '#type' => 'checkbox',
        '#title' => t('Open URL in a New Window'),
        '#return_value' => "_blank",
-       '#default_value' => isset($attributes['target']) ? $attributes['target'] : NULL,
      );
    }
    return $element;
@@ -548,7 +547,7 @@ function theme_link_formatter_default($element) {
  * Theme function for 'plain' text field formatter.
  */
 function theme_link_formatter_plain($element) {
-  return empty($element['#item']['url']) ? check_plain($element['#item']['title']) : url($element['#item']['url'], $element['#item']);
+  return empty($element['#item']['url']) ? check_plain($element['#item']['title']) : check_plain($element['#item']['url']);
 }
 
 /**
