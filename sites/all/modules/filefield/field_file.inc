@@ -1,5 +1,5 @@
 <?php
-// $Id: field_file.inc,v 1.23 2009/02/04 00:42:50 dopry Exp $
+// $Id: field_file.inc,v 1.25 2009/03/15 06:21:21 quicksketch Exp $
 /**
  * @file
  * Common functionality for file handling CCK field modules.
@@ -202,7 +202,7 @@ function field_file_save_file($filepath, $validators = array(), $dest = FALSE) {
  */
 function field_file_save($node, &$file) {
   // If this item is marked for deletion.
-  if (!empty($file['delete'])) {
+  if (!empty($file['delete']) || !empty($file['_remove'])) {
     // If we're creating a new revision, return an empty array so CCK will
     // remove the item.
     if (!empty($node->old_vid)) {
@@ -367,13 +367,16 @@ function field_file_strip_path($path) {
 
 function field_file_references($file, $field) {
   $db_info = content_database_info($field);
-  $references += db_result(db_query(
+  $references = db_result(db_query(
     'SELECT count('. $db_info['columns']['fid']['column'] .')
       FROM {'. $db_info['table'] .'}
       WHERE '. $db_info['columns']['fid']['column'] .' = %d', $file->fid
   ));
+
+  // If a field_name is present in the file object, the file is being deleted
+  // from this field, decrement the number of total references by one.
   if (isset($file->field_name) && $field['field_name'] == $file->field_name) {
-    --$references; // doesn't count as it's being deleted
+    --$references;
   }
   return $references;
 }
